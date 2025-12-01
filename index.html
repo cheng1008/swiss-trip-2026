@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>瑞士之旅 2026</title>
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/197/197560.png"> 
+
+    <!-- 載入核心工具 (使用更穩定的 CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <style>
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        body { padding-bottom: env(safe-area-inset-bottom); background-color: black; color: white; }
+        .glass { background: rgba(28, 28, 30, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .loading { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background: black; z-index: 9999; }
+        .error-box { background: #330000; color: #ffcccc; padding: 20px; border-radius: 10px; max-width: 80%; text-align: left; font-family: monospace; border: 1px solid red; display: none; }
+    </style>
+</head>
+<body>
+    <!-- 預設載入畫面 -->
+    <div id="loading" class="loading">
+        <div class="text-center" id="loading-text">
+            <div class="text-2xl font-bold text-[#D4AF37] mb-2">正在載入行程...</div>
+            <div class="text-gray-500 text-sm">請稍候</div>
+        </div>
+        <!-- 錯誤訊息顯示區 -->
+        <div id="error-msg" class="error-box mt-4"></div>
+    </div>
+
+    <div id="root"></div>
+
+    <!-- 錯誤捕捉腳本 -->
+    <script>
+        window.onerror = function(msg, url, lineNo, columnNo, error) {
+            const loadingText = document.getElementById('loading-text');
+            const errorBox = document.getElementById('error-msg');
+            if(loadingText) loadingText.style.display = 'none';
+            if(errorBox) {
+                errorBox.style.display = 'block';
+                errorBox.innerHTML = `<strong>發生錯誤 (App Error):</strong><br/>${msg}<br/><br/>Line: ${lineNo}`;
+            }
+            return false;
+        };
+    </script>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // --- 圖示組件 ---
+        const Icon = ({ path, size = 20, className = "", color = "currentColor" }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+                {path}
+            </svg>
+        );
+
+        // --- 修正後的圖示資料庫 (修復了火車和太陽的語法錯誤) ---
+        const icons = {
+            plane: <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>,
+            mapPin: <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z M12 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>,
+            mountain: <path d="m8 3 4 8 5-5 5 15H2L8 3z"/>,
+            wallet: <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4M3 5v14a2 2 0 0 0 2 2h16v-5M18 12h-3"/>,
+            // 這裡使用了 React.Fragment (<>...</>) 來包覆多個路徑
+            train: <><rect x="4" y="3" width="16" height="16" rx="2" /><path d="M4 11h16 M12 3v8 M8 19l-2 3 M16 19l2 3 M4 15h16"/></>,
+            bed: <path d="M2 4v16M2 8h18a2 2 0 0 1 2 2v10M2 17h20M6 8v9"/>,
+            utensils: <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2M21 2v20M7 2v20"/>,
+            shopping: <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z M3 6h18 M16 10a4 4 0 0 1-8 0"/>,
+            camera: <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z M12 13a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/>,
+            snowflake: <path d="M2 12h20M12 2v20M20 20L4 4M20 4L4 20"/>,
+            sun: <><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></>,
+            cloud: <path d="M17.5 19c0-3.037-2.463-5.5-5.5-5.5S6.5 15.963 6.5 19"/>,
+            trash: <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+        };
+
+        const TRIP_INFO = { title: "瑞士冬日之旅", daysUntil: 43, exchangeRate: 36.5 };
+
+        // --- 行程資料 ---
+        const ITINERARY_DATA = {
+            "day1": {
+                date: "1/12 (日)", title: "啟程：飛往蘇黎世", description: "經香港轉機前往蘇黎世，準備迎接雪景。",
+                tags: ["長途飛行"], weather: { temp: "18°C", text: "多雲", icon: "cloud" },
+                timeline: [
+                    { time: "19:40", title: "台北起飛", type: "flight", icon: "plane", desc: "前往香港轉機" },
+                    { time: "21:55", title: "抵達香港", type: "location", icon: "mapPin", desc: "轉機 2.5 小時" },
+                    { time: "00:35", title: "飛往蘇黎世", type: "flight", icon: "plane", desc: "ZRH", endTime: "+1" }
+                ]
+            },
+            "day2": {
+                date: "1/13 (一)", title: "盧塞恩湖畔", description: "清晨抵達瑞士，漫步卡貝爾橋與老城。",
+                tags: ["卡貝爾橋"], weather: { temp: "2°C", text: "多雲", icon: "cloud" },
+                tip: "蘇黎世機場到盧塞恩火車約 1 小時。",
+                timeline: [
+                    { time: "06:10", title: "抵達機場", type: "location", icon: "plane" },
+                    { time: "07:30", title: "火車往盧塞恩", type: "transport", icon: "train" },
+                    { time: "09:00", title: "Check-in", type: "stay", icon: "bed", desc: "Hotel Pickwick" },
+                    { time: "10:30", title: "卡貝爾橋", type: "location", icon: "mapPin" }
+                ]
+            },
+            "day3": {
+                date: "1/14 (二)", title: "格林德瓦", description: "前往夢幻山坡小鎮，通往少女峰的前哨站。",
+                tags: ["夢幻山坡"], weather: { temp: "-3°C", text: "小雪", icon: "snowflake" },
+                timeline: [
+                    { time: "09:00", title: "移動日", type: "transport", icon: "train", desc: "往 Grindelwald" },
+                    { time: "12:00", title: "入住飯店", type: "stay", icon: "bed", desc: "Hotel Eiger" },
+                    { time: "14:00", title: "超市採買", type: "location", icon: "shopping" }
+                ]
+            },
+            "day4": {
+                date: "1/15 (三)", title: "少女峰登頂", description: "登上歐洲屋脊！體驗冰宮與阿萊奇冰川。",
+                tags: ["少女峰", "冰宮"], weather: { temp: "-12°C", text: "暴風雪", icon: "snowflake" },
+                tip: "高海拔 3454m 動作請放慢，注意保暖。",
+                timeline: [
+                    { time: "08:30", title: "火車上山", type: "transport", icon: "train" },
+                    { time: "10:30", title: "觀景台", type: "location", icon: "mountain" },
+                    { time: "14:00", title: "瀑布鎮散步", type: "location", icon: "mapPin" }
+                ]
+            },
+            "day5": {
+                date: "1/16 (四)", title: "First 懸崖步道", description: "First 山頂步道，雪地健行。",
+                tags: ["懸崖步道"], weather: { temp: "-5°C", text: "晴天", icon: "sun" },
+                timeline: [
+                    { time: "09:30", title: "纜車上山", type: "transport", icon: "mountain" },
+                    { time: "10:30", title: "Cliff Walk", type: "location", icon: "camera" },
+                    { time: "14:00", title: "雪地散步", type: "location", icon: "snowflake" }
+                ]
+            },
+            "day6": {
+                date: "1/17 (五)", title: "前往策馬特", description: "前往馬特洪峰的故鄉。",
+                tags: ["馬特洪峰"], weather: { temp: "-4°C", text: "晴天", icon: "sun" },
+                timeline: [
+                    { time: "09:00", title: "火車移動", type: "transport", icon: "train" },
+                    { time: "13:00", title: "Check-in", type: "stay", icon: "bed", desc: "Beautiful Views Apt" },
+                    { time: "17:00", title: "日照金山", type: "location", icon: "mountain" }
+                ]
+            },
+            "day7": {
+                date: "1/18 (六)", title: "Gornergrat", description: "欣賞最經典的馬特洪峰角度。",
+                tags: ["觀景台"], weather: { temp: "-8°C", text: "晴天", icon: "sun" },
+                timeline: [
+                    { time: "09:00", title: "登山火車", type: "transport", icon: "train" },
+                    { time: "10:00", title: "瘋狂拍照", type: "location", icon: "camera" },
+                    { time: "13:00", title: "逛街", type: "location", icon: "shopping" }
+                ]
+            },
+            "day8": {
+                date: "1/19 (日)", title: "冰河列車", description: "世界最慢的快車，返回蘇黎世。",
+                tags: ["冰河列車"], weather: { temp: "0°C", text: "陰天", icon: "cloud" },
+                timeline: [
+                    { time: "09:52", title: "列車發車", type: "transport", icon: "train" },
+                    { time: "16:00", title: "入住飯店", type: "stay", icon: "bed", desc: "Trip Inn Zurich" },
+                    { time: "17:00", title: "班霍夫大道", type: "location", icon: "shopping" }
+                ]
+            },
+            "day9": {
+                date: "1/20 (一)", title: "再見瑞士", description: "蘇黎世湖散步，前往機場。",
+                tags: ["蘇黎世湖"], weather: { temp: "3°C", text: "微雨", icon: "cloud" },
+                timeline: [
+                    { time: "09:00", title: "巧克力工廠", type: "location", icon: "utensils" },
+                    { time: "15:00", title: "前往機場", type: "transport", icon: "train" },
+                    { time: "22:40", title: "起飛返台", type: "flight", icon: "plane" }
+                ]
+            }
+        };
+
+        // --- 主程式 App ---
+        const App = () => {
+            const [activeTab, setActiveTab] = useState('day1');
+            const [expenses, setExpenses] = useState([]);
+            const [input, setInput] = useState({ item: "", chf: "", twd: "", cat: "food" });
+
+            // 確保 LocalStorage 不會出錯
+            useEffect(() => {
+                try {
+                    const saved = localStorage.getItem('swiss_expenses_v2');
+                    if (saved) setExpenses(JSON.parse(saved));
+                } catch(e) { console.error("Load failed", e); }
+            }, []);
+
+            useEffect(() => {
+                localStorage.setItem('swiss_expenses_v2', JSON.stringify(expenses));
+            }, [expenses]);
+
+            // 當 React 準備好後，隱藏 Loading 畫面
+            useEffect(() => {
+                const loader = document.getElementById('loading');
+                if(loader) loader.style.display = 'none';
+            }, []);
+
+            const handleChf = (val) => setInput({ ...input, chf: val, twd: val ? Math.round(val * TRIP_INFO.exchangeRate) : "" });
+            const addExp = () => {
+                if (!input.item || !input.chf) return;
+                setExpenses([{ id: Date.now(), ...input, chf: parseFloat(input.chf), twd: parseInt(input.twd) }, ...expenses]);
+                setInput({ item: "", chf: "", twd: "", cat: "food" });
+            };
+
+            const SidebarItem = ({ id, icon, label }) => (
+                <button onClick={() => setActiveTab(id)} className={`w-full py-4 flex flex-col items-center relative active-scale ${activeTab === id ? 'text-[#D4AF37]' : 'text-gray-500'}`}>
+                    {activeTab === id && <div className="absolute left-0 top-1/2 -translate-y-1/2 h-6 w-1 bg-[#D4AF37] rounded-r-full shadow-[0_0_8px_#D4AF37]"/>}
+                    <Icon path={icons[icon]} size={24} className="mb-1" />
+                    <span className="text-[10px] font-bold">{label}</span>
+                </button>
+            );
+
+            return (
+                <div className="flex h-screen w-screen overflow-hidden bg-black text-white font-sans">
+                    {/* 左側欄 */}
+                    <div className="w-[72px] bg-[#0c0c0e] border-r border-gray-900 flex flex-col items-center pt-safe pb-safe z-50 flex-shrink-0">
+                        <div className="pt-4 pb-2 text-center">
+                            <div className="w-10 h-10 rounded-full bg-gradient-to-b from-[#D4AF37] to-[#8C6D1F] flex items-center justify-center text-black font-black text-xs mx-auto mb-1">
+                                {TRIP_INFO.daysUntil}
+                            </div>
+                            <div className="text-[9px] text-gray-500 font-bold">DAYS</div>
+                        </div>
+                        <div className="w-full h-[1px] bg-gray-800 my-1"></div>
+                        <div className="flex-1 w-full overflow-y-auto no-scrollbar">
+                            <SidebarItem id="day1" icon="plane" label="D1" />
+                            <SidebarItem id="day2" icon="mapPin" label="D2" />
+                            <SidebarItem id="day3" icon="mountain" label="D3" />
+                            <SidebarItem id="day4" icon="snowflake" label="D4" />
+                            <SidebarItem id="day5" icon="mountain" label="D5" />
+                            <SidebarItem id="day6" icon="train" label="D6" />
+                            <SidebarItem id="day7" icon="camera" label="D7" />
+                            <SidebarItem id="day8" icon="train" label="D8" />
+                            <SidebarItem id="day9" icon="plane" label="D9" />
+                        </div>
+                        <div className="w-full border-t border-gray-800 pt-2 pb-6 bg-[#0c0c0e]">
+                            <SidebarItem id="expense" icon="wallet" label="記帳" />
+                        </div>
+                    </div>
+
+                    {/* 右側內容 */}
+                    <div className="flex-1 h-full overflow-hidden relative">
+                        {activeTab === 'expense' ? (
+                            <div className="h-full overflow-y-auto no-scrollbar p-6 pb-32">
+                                <h2 className="text-2xl font-bold mb-1">瑞士記帳本</h2>
+                                <p className="text-xs text-gray-500 mb-6">匯率: 1 CHF ≈ {TRIP_INFO.exchangeRate} TWD</p>
+                                <div className="bg-gradient-to-br from-[#D4AF37] to-[#B59124] rounded-2xl p-5 mb-6 text-black shadow-lg">
+                                    <div className="text-xs font-bold opacity-70 uppercase">總花費 (NTD)</div>
+                                    <div className="text-4xl font-black mt-1">${expenses.reduce((a,c)=>a+c.twd,0).toLocaleString()}</div>
+                                </div>
+                                <div className="bg-[#1C1C1E] p-4 rounded-xl space-y-3 mb-6 border border-gray-800">
+                                    <input type="text" placeholder="品項" value={input.item} onChange={e=>setInput({...input, item: e.target.value})} className="w-full bg-[#2C2C2E] p-3 rounded-lg text-white outline-none focus:ring-1 focus:ring-[#D4AF37]" />
+                                    <div className="flex gap-2">
+                                        <input type="number" placeholder="CHF" value={input.chf} onChange={e=>handleChf(e.target.value)} className="w-1/2 bg-[#2C2C2E] p-3 rounded-lg text-white outline-none focus:ring-1 focus:ring-[#D4AF37]" />
+                                        <input type="text" value={input.twd} readOnly className="w-1/2 bg-[#1A1A1C] p-3 rounded-lg text-gray-400 outline-none" />
+                                    </div>
+                                    <button onClick={addExp} className="w-full bg-[#D4AF37] text-black font-bold py-3 rounded-lg active-scale">新增紀錄</button>
+                                </div>
+                                <div className="space-y-2">
+                                    {expenses.map(ex => (
+                                        <div key={ex.id} className="bg-[#1C1C1E] p-4 rounded-xl flex justify-between items-center border border-gray-800/50">
+                                            <div><div className="font-bold text-sm">{ex.item}</div><div className="text-xs text-gray-500">Fr. {ex.chf}</div></div>
+                                            <div className="flex items-center gap-3"><div className="text-[#D4AF37] font-bold">${ex.twd}</div><button onClick={()=>setExpenses(expenses.filter(e=>e.id!==ex.id))} className="text-gray-600">✕</button></div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="h-full overflow-y-auto no-scrollbar relative">
+                                <div className="px-6 pt-10 pb-6">
+                                    <div className="flex justify-between items-start mb-4">
+                                        <div className="inline-flex items-center gap-2 bg-[#1C1C1E] px-3 py-1 rounded-full border border-gray-800">
+                                            <span className="w-2 h-2 rounded-full bg-[#D4AF37] animate-pulse"></span>
+                                            <span className="text-[#D4AF37] text-xs font-bold uppercase tracking-wider">{ITINERARY_DATA[activeTab].date}</span>
+                                        </div>
+                                        {ITINERARY_DATA[activeTab].weather && (
+                                            <div className="glass px-3 py-1.5 rounded-lg flex items-center gap-2">
+                                                <Icon path={icons[ITINERARY_DATA[activeTab].weather.icon] || icons.sun} size={16} className={ITINERARY_DATA[activeTab].weather.icon === 'sun' ? 'text-yellow-400' : ITINERARY_DATA[activeTab].weather.icon === 'snowflake' ? 'text-blue-300' : 'text-gray-400'} />
+                                                <div className="flex flex-col items-end leading-none">
+                                                    <span className="text-sm font-bold">{ITINERARY_DATA[activeTab].weather.temp}</span>
+                                                    <span className="text-[9px] text-gray-400">{ITINERARY_DATA[activeTab].weather.text}</span>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                    <h1 className="text-3xl font-black mb-3 leading-tight">{ITINERARY_DATA[activeTab].title}</h1>
+                                    <p className="text-gray-400 text-sm leading-relaxed">{ITINERARY_DATA[activeTab].description}</p>
+                                    <div className="flex flex-wrap gap-2 mt-4">
+                                        {ITINERARY_DATA[activeTab].tags.map(tag => (
+                                            <span key={tag} className="text-[10px] font-bold bg-[#1C1C1E] text-gray-300 px-2 py-1 rounded border border-gray-800">#{tag}</span>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <div className="px-6 pb-24">
+                                    {ITINERARY_DATA[activeTab].tip && (
+                                        <div className="mb-6 bg-[#151516] border-l-4 border-[#D4AF37] rounded-r-xl p-4 shadow-lg">
+                                            <h3 className="text-[#D4AF37] font-bold text-xs mb-1 flex items-center gap-1"><Icon path={icons.sun} size={14}/> 小撇步</h3>
+                                            <p className="text-gray-300 text-xs leading-relaxed">{ITINERARY_DATA[activeTab].tip}</p>
+                                        </div>
+                                    )}
+
+                                    <div className="space-y-1 relative pl-2">
+                                        {ITINERARY_DATA[activeTab].timeline.map((ev, i) => (
+                                            <div key={i} className="flex gap-4 relative pb-8 last:pb-0">
+                                                <div className="flex flex-col items-center w-8 flex-shrink-0">
+                                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center z-10 border-2 border-[#121212] ${ev.type==='flight'?'bg-[#003060] text-white': ev.type==='transport'?'bg-[#263238] text-gray-300': 'bg-[#1A332A] text-[#A5D6A7]'}`}>
+                                                        <Icon path={icons[ev.icon] || icons.mapPin} size={14} />
+                                                    </div>
+                                                    {i !== ITINERARY_DATA[activeTab].timeline.length - 1 && <div className="w-[1px] flex-1 bg-gray-800 my-1"></div>}
+                                                </div>
+                                                <div className="flex-1 pt-1">
+                                                    <div className="flex items-baseline gap-2 mb-1">
+                                                        <span className="text-[#D4AF37] font-mono text-lg font-bold">{ev.time}</span>
+                                                        {ev.endTime && <span className="text-gray-500 text-xs">{ev.endTime}</span>}
+                                                    </div>
+                                                    <div className="bg-[#1C1C1E] rounded-xl p-3 border border-gray-800/50">
+                                                        <h3 className="font-bold mb-1">{ev.title}</h3>
+                                                        {ev.desc && <p className="text-gray-400 text-xs">{ev.desc}</p>}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
