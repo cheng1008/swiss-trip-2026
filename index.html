@@ -2,334 +2,558 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>瑞士之旅 2026</title>
-    
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#000000">
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/197/197560.png"> 
-
-    <!-- 載入核心工具 (使用更穩定的 CDN) -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>瑞士10天深度之旅 🇨🇭</title>
     <style>
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        body { padding-bottom: env(safe-area-inset-bottom); background-color: black; color: white; }
-        .glass { background: rgba(28, 28, 30, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .loading { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background: black; z-index: 9999; }
-        .error-box { background: #330000; color: #ffcccc; padding: 20px; border-radius: 10px; max-width: 80%; text-align: left; font-family: monospace; border: 1px solid red; display: none; }
+        :root {
+            --primary: #D80027; /* Swiss Red */
+            --bg: #F2F2F7;      /* iOS Gray */
+            --card: #FFFFFF;
+            --text: #1C1C1E;
+            --subtext: #8E8E93;
+            --accent: #007AFF;
+            --danger: #FF3B30;
+            --rain: #546e7a;    /* Color for backup plans */
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            padding-bottom: 90px; /* Space for bottom nav */
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* --- Header --- */
+        .app-header {
+            background-color: var(--card);
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 50px;
+        }
+
+        .app-title { font-size: 1.1rem; font-weight: 700; margin: 0; }
+        
+        .back-btn {
+            position: absolute; left: 15px; color: var(--accent);
+            font-size: 1rem; cursor: pointer; display: none; font-weight: 500;
+        }
+
+        /* --- Bottom Navigation --- */
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(0,0,0,0.1);
+            display: flex; justify-content: space-around;
+            padding: 10px 0 30px 0;
+            z-index: 1000;
+        }
+
+        .nav-item {
+            text-align: center; color: var(--subtext);
+            font-size: 0.7rem; cursor: pointer; flex: 1;
+        }
+
+        .nav-item.active { color: var(--primary); }
+        .nav-icon { font-size: 1.5rem; display: block; margin-bottom: 2px; }
+
+        /* --- Views --- */
+        .view { display: none; padding: 20px; max-width: 600px; margin: 0 auto; animation: fadeIn 0.3s ease; }
+        .view.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- Trip Summary Styles --- */
+        .trip-summary {
+            background: var(--primary); color: white; border-radius: 16px;
+            padding: 20px; margin-bottom: 25px; box-shadow: 0 4px 12px rgba(216, 0, 39, 0.3);
+        }
+        .trip-dates { font-size: 0.9rem; opacity: 0.9; margin-bottom: 5px; }
+        .trip-name { font-size: 1.5rem; font-weight: 800; margin: 0; }
+
+        .day-list-item {
+            background: var(--card); border-radius: 12px; padding: 15px;
+            margin-bottom: 12px; display: flex; align-items: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05); cursor: pointer;
+        }
+        .day-list-item:active { transform: scale(0.98); transition: 0.1s; }
+
+        .day-number {
+            background: #ffebee; color: var(--primary); width: 45px; height: 45px;
+            border-radius: 10px; display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 1.1rem; margin-right: 15px; flex-shrink: 0;
+        }
+        .day-info h3 { margin: 0 0 4px 0; font-size: 1rem; }
+        .day-info p { margin: 0; color: var(--subtext); font-size: 0.85rem; }
+        .arrow { margin-left: auto; color: #ccc; }
+
+        /* --- Tool Styles --- */
+        .tool-card {
+            background: var(--card); border-radius: 12px; padding: 20px;
+            margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .tool-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
+        
+        .converter-row { display: flex; gap: 10px; margin-bottom: 10px; align-items: center; }
+        .input-group { flex: 1; }
+        .input-group label { display: block; font-size: 0.8rem; color: var(--subtext); margin-bottom: 5px; }
+        .input-field {
+            width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;
+            font-size: 1.2rem; font-weight: bold; box-sizing: border-box; outline: none;
+        }
+        .input-field:focus { border-color: var(--primary); }
+        .rate-input { width: 60px; padding: 5px; border-radius: 5px; border: 1px solid #ddd; text-align: center; font-size: 0.9rem; }
+
+        .expense-form { display: flex; gap: 10px; margin-bottom: 15px; }
+        .expense-input { flex: 2; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        .amount-input { flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        .btn-add {
+            background: var(--primary); color: white; border: none; padding: 0 20px;
+            border-radius: 8px; font-weight: bold; cursor: pointer;
+        }
+        .total-display {
+            background: #333; color: white; padding: 15px; border-radius: 12px;
+            margin-bottom: 20px; text-align: center;
+        }
+        .total-amount { font-size: 2rem; font-weight: 800; }
+        .total-sub { font-size: 0.9rem; opacity: 0.8; }
+        .expense-list { list-style: none; padding: 0; margin: 0; }
+        .expense-item {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 12px 0; border-bottom: 1px solid #eee; animation: fadeIn 0.2s;
+        }
+        .expense-name { font-weight: 500; }
+        .expense-price { font-weight: 700; color: var(--text); }
+        .btn-delete { color: #ccc; margin-left: 10px; cursor: pointer; padding: 5px; }
+
+        /* --- Detail Styles --- */
+        .detail-hero { margin-bottom: 20px; }
+        .detail-date { color: var(--subtext); font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        .detail-title { font-size: 1.8rem; font-weight: 800; margin: 5px 0 10px 0; line-height: 1.2; }
+        
+        .section-title { font-size: 0.85rem; color: var(--subtext); text-transform: uppercase; font-weight: 700; margin: 25px 0 10px 0; letter-spacing: 0.5px;}
+        
+        .tips-box { background: #fff8e1; border: 1px solid #ffecb3; border-radius: 12px; padding: 15px; margin-bottom: 20px; }
+        .tips-header { display: flex; align-items: center; font-weight: 700; color: #f57f17; margin-bottom: 8px; }
+        .tips-content ul { padding-left: 20px; margin: 0; color: #5d4037; font-size: 0.9rem; }
+        
+        /* Bad Weather Backup Box */
+        .backup-box {
+            background: #eceff1; border: 1px solid #cfd8dc; border-radius: 12px; padding: 15px; margin-bottom: 25px;
+            border-left: 5px solid var(--rain);
+        }
+        .backup-header { display: flex; align-items: center; font-weight: 700; color: var(--rain); margin-bottom: 8px; }
+        .backup-content { font-size: 0.9rem; color: #455a64; line-height: 1.5; }
+        .backup-title { font-weight: bold; display: block; margin-top: 10px; color: #333; }
+
+        .timeline { position: relative; padding-left: 20px; }
+        .timeline::before { content: ''; position: absolute; left: 6px; top: 5px; bottom: 0; width: 2px; background: #e0e0e0; }
+        .time-block { position: relative; margin-bottom: 25px; }
+        .time-dot { position: absolute; left: -19px; top: 5px; width: 12px; height: 12px; background: var(--card); border: 3px solid var(--primary); border-radius: 50%; }
+        .time-label { font-size: 0.85rem; font-weight: 700; color: var(--primary); margin-bottom: 4px; }
+        .activity-name { font-size: 1.1rem; font-weight: 600; margin-bottom: 5px; }
+        
+        .activity-desc { font-size: 0.95rem; color: #444; line-height: 1.6; }
+        .detail-list { padding-left: 18px; margin: 5px 0 0 0; color: #666; font-size: 0.9rem; }
+        .detail-list li { margin-bottom: 4px; }
+
+        .tag { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; margin-top: 5px; background: #e3f2fd; color: #1565c0; }
+        .tag-train { background: #e3f2fd; color: #1565c0; }
+        .tag-backup { background: #fff; border: 1px solid var(--rain); color: var(--rain); }
+
+        .hotel-card { background: var(--card); border-radius: 12px; padding: 15px; border-left: 5px solid #2e7d32; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .hotel-label { font-size: 0.75rem; color: #2e7d32; font-weight: 700; margin-bottom: 5px; }
+        .hotel-name { font-weight: 600; font-size: 1rem; }
     </style>
 </head>
 <body>
-    <!-- 預設載入畫面 -->
-    <div id="loading" class="loading">
-        <div class="text-center" id="loading-text">
-            <div class="text-2xl font-bold text-[#D4AF37] mb-2">正在載入行程...</div>
-            <div class="text-gray-500 text-sm">請稍候</div>
+
+    <header class="app-header">
+        <div class="back-btn" onclick="goHome()">❮ 返回</div>
+        <div class="app-title" id="header-title">行程總覽</div>
+    </header>
+
+    <div id="home-view" class="view active">
+        <div class="trip-summary">
+            <div class="trip-dates">2026/01/12 - 01/21</div>
+            <h1 class="trip-name">🇨🇭 瑞士冬季<br>10天深度之旅</h1>
         </div>
-        <!-- 錯誤訊息顯示區 -->
-        <div id="error-msg" class="error-box mt-4"></div>
+
+        <div class="section-title">每日行程</div>
+
+        <div class="day-list-item" onclick="openDay('day1')">
+            <div class="day-number">D1</div>
+            <div class="day-info"><h3>抵達 & 琉森湖光山色</h3><p>1/13 (二) | 蘇黎世 -> 琉森</p></div><div class="arrow">❯</div>
+        </div>
+        <div class="day-list-item" onclick="openDay('day2')">
+            <div class="day-number">D2</div>
+            <div class="day-info"><h3>黃金列車 & 格林德瓦</h3><p>1/14 (三) | 琉森 -> 格林德瓦</p></div><div class="arrow">❯</div>
+        </div>
+        <div class="day-list-item" onclick="openDay('day3')">
+            <div class="day-number">D3</div>
+            <div class="day-info"><h3>少女峰 (含雨備)</h3><p>1/15 (四) | 歐洲屋脊 or 瀑布</p></div><div class="arrow">❯</div>
+        </div>
+        <div class="day-list-item" onclick="openDay('day4')">
+            <div class="day-number">D4</div>
+            <div class="day-info"><h3>首都伯恩 拱廊街購物</h3><p>1/16 (五) | 伯恩一日遊</p></div><div class="arrow">❯</div>
+        </div>
+        <div class="day-list-item" onclick="openDay('day5')">
+            <div class="day-number">D5</div>
+            <div class="day-info"><h3>前進馬特洪峰</h3><p>1/17 (六) | 格林德瓦 -> 采爾馬特</p></div><div class="arrow">❯</div>
+        </div>
+        <div class="day-list-item" onclick="openDay('day6')">
+            <div class="day-number">D6</div>
+            <div class="day-info"><h3>葛內拉特 (含雨備)</h3><p>1/18 (日) | 轉戰城市 or 觀景台</p></div><div class="arrow">❯</div>
+        </div>
+        <div class="day-list-item" onclick="openDay('day7')">
+            <div class="day-number">D7</div>
+            <div class="day-info"><h3>冰河列車景觀之旅</h3><p>1/19 (一) | 采爾馬特 -> 蘇黎世</p></div><div class="arrow">❯</div>
+        </div>
+        <div class="day-list-item" onclick="openDay('day8')">
+            <div class="day-number">D8</div>
+            <div class="day-info"><h3>蘇黎世/瀑布 & 返家</h3><p>1/20 (二) | 蘇黎世周邊</p></div><div class="arrow">❯</div>
+        </div>
     </div>
 
-    <div id="root"></div>
-
-    <!-- 錯誤捕捉腳本 -->
-    <script>
-        window.onerror = function(msg, url, lineNo, columnNo, error) {
-            const loadingText = document.getElementById('loading-text');
-            const errorBox = document.getElementById('error-msg');
-            if(loadingText) loadingText.style.display = 'none';
-            if(errorBox) {
-                errorBox.style.display = 'block';
-                errorBox.innerHTML = `<strong>發生錯誤 (App Error):</strong><br/>${msg}<br/><br/>Line: ${lineNo}`;
-            }
-            return false;
-        };
-    </script>
-
-    <script type="text/babel">
-        const { useState, useEffect } = React;
-
-        // --- 圖示組件 ---
-        const Icon = ({ path, size = 20, className = "", color = "currentColor" }) => (
-            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-                {path}
-            </svg>
-        );
-
-        // --- 修正後的圖示資料庫 (修復了火車和太陽的語法錯誤) ---
-        const icons = {
-            plane: <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>,
-            mapPin: <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z M12 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>,
-            mountain: <path d="m8 3 4 8 5-5 5 15H2L8 3z"/>,
-            wallet: <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4M3 5v14a2 2 0 0 0 2 2h16v-5M18 12h-3"/>,
-            // 這裡使用了 React.Fragment (<>...</>) 來包覆多個路徑
-            train: <><rect x="4" y="3" width="16" height="16" rx="2" /><path d="M4 11h16 M12 3v8 M8 19l-2 3 M16 19l2 3 M4 15h16"/></>,
-            bed: <path d="M2 4v16M2 8h18a2 2 0 0 1 2 2v10M2 17h20M6 8v9"/>,
-            utensils: <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2M21 2v20M7 2v20"/>,
-            shopping: <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z M3 6h18 M16 10a4 4 0 0 1-8 0"/>,
-            camera: <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z M12 13a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/>,
-            snowflake: <path d="M2 12h20M12 2v20M20 20L4 4M20 4L4 20"/>,
-            sun: <><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></>,
-            cloud: <path d="M17.5 19c0-3.037-2.463-5.5-5.5-5.5S6.5 15.963 6.5 19"/>,
-            trash: <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-        };
-
-        const TRIP_INFO = { title: "瑞士冬日之旅", daysUntil: 43, exchangeRate: 36.5 };
-
-        // --- 行程資料 ---
-        const ITINERARY_DATA = {
-            "day1": {
-                date: "1/12 (日)", title: "啟程：飛往蘇黎世", description: "經香港轉機前往蘇黎世，準備迎接雪景。",
-                tags: ["長途飛行"], weather: { temp: "18°C", text: "多雲", icon: "cloud" },
-                timeline: [
-                    { time: "19:40", title: "台北起飛", type: "flight", icon: "plane", desc: "前往香港轉機" },
-                    { time: "21:55", title: "抵達香港", type: "location", icon: "mapPin", desc: "轉機 2.5 小時" },
-                    { time: "00:35", title: "飛往蘇黎世", type: "flight", icon: "plane", desc: "ZRH", endTime: "+1" }
-                ]
-            },
-            "day2": {
-                date: "1/13 (一)", title: "盧塞恩湖畔", description: "清晨抵達瑞士，漫步卡貝爾橋與老城。",
-                tags: ["卡貝爾橋"], weather: { temp: "2°C", text: "多雲", icon: "cloud" },
-                tip: "蘇黎世機場到盧塞恩火車約 1 小時。",
-                timeline: [
-                    { time: "06:10", title: "抵達機場", type: "location", icon: "plane" },
-                    { time: "07:30", title: "火車往盧塞恩", type: "transport", icon: "train" },
-                    { time: "09:00", title: "Check-in", type: "stay", icon: "bed", desc: "Hotel Pickwick" },
-                    { time: "10:30", title: "卡貝爾橋", type: "location", icon: "mapPin" }
-                ]
-            },
-            "day3": {
-                date: "1/14 (二)", title: "格林德瓦", description: "前往夢幻山坡小鎮，通往少女峰的前哨站。",
-                tags: ["夢幻山坡"], weather: { temp: "-3°C", text: "小雪", icon: "snowflake" },
-                timeline: [
-                    { time: "09:00", title: "移動日", type: "transport", icon: "train", desc: "往 Grindelwald" },
-                    { time: "12:00", title: "入住飯店", type: "stay", icon: "bed", desc: "Hotel Eiger" },
-                    { time: "14:00", title: "超市採買", type: "location", icon: "shopping" }
-                ]
-            },
-            "day4": {
-                date: "1/15 (三)", title: "少女峰登頂", description: "登上歐洲屋脊！體驗冰宮與阿萊奇冰川。",
-                tags: ["少女峰", "冰宮"], weather: { temp: "-12°C", text: "暴風雪", icon: "snowflake" },
-                tip: "高海拔 3454m 動作請放慢，注意保暖。",
-                timeline: [
-                    { time: "08:30", title: "火車上山", type: "transport", icon: "train" },
-                    { time: "10:30", title: "觀景台", type: "location", icon: "mountain" },
-                    { time: "14:00", title: "瀑布鎮散步", type: "location", icon: "mapPin" }
-                ]
-            },
-            "day5": {
-                date: "1/16 (四)", title: "First 懸崖步道", description: "First 山頂步道，雪地健行。",
-                tags: ["懸崖步道"], weather: { temp: "-5°C", text: "晴天", icon: "sun" },
-                timeline: [
-                    { time: "09:30", title: "纜車上山", type: "transport", icon: "mountain" },
-                    { time: "10:30", title: "Cliff Walk", type: "location", icon: "camera" },
-                    { time: "14:00", title: "雪地散步", type: "location", icon: "snowflake" }
-                ]
-            },
-            "day6": {
-                date: "1/17 (五)", title: "前往策馬特", description: "前往馬特洪峰的故鄉。",
-                tags: ["馬特洪峰"], weather: { temp: "-4°C", text: "晴天", icon: "sun" },
-                timeline: [
-                    { time: "09:00", title: "火車移動", type: "transport", icon: "train" },
-                    { time: "13:00", title: "Check-in", type: "stay", icon: "bed", desc: "Beautiful Views Apt" },
-                    { time: "17:00", title: "日照金山", type: "location", icon: "mountain" }
-                ]
-            },
-            "day7": {
-                date: "1/18 (六)", title: "Gornergrat", description: "欣賞最經典的馬特洪峰角度。",
-                tags: ["觀景台"], weather: { temp: "-8°C", text: "晴天", icon: "sun" },
-                timeline: [
-                    { time: "09:00", title: "登山火車", type: "transport", icon: "train" },
-                    { time: "10:00", title: "瘋狂拍照", type: "location", icon: "camera" },
-                    { time: "13:00", title: "逛街", type: "location", icon: "shopping" }
-                ]
-            },
-            "day8": {
-                date: "1/19 (日)", title: "冰河列車", description: "世界最慢的快車，返回蘇黎世。",
-                tags: ["冰河列車"], weather: { temp: "0°C", text: "陰天", icon: "cloud" },
-                timeline: [
-                    { time: "09:52", title: "列車發車", type: "transport", icon: "train" },
-                    { time: "16:00", title: "入住飯店", type: "stay", icon: "bed", desc: "Trip Inn Zurich" },
-                    { time: "17:00", title: "班霍夫大道", type: "location", icon: "shopping" }
-                ]
-            },
-            "day9": {
-                date: "1/20 (一)", title: "再見瑞士", description: "蘇黎世湖散步，前往機場。",
-                tags: ["蘇黎世湖"], weather: { temp: "3°C", text: "微雨", icon: "cloud" },
-                timeline: [
-                    { time: "09:00", title: "巧克力工廠", type: "location", icon: "utensils" },
-                    { time: "15:00", title: "前往機場", type: "transport", icon: "train" },
-                    { time: "22:40", title: "起飛返台", type: "flight", icon: "plane" }
-                ]
-            }
-        };
-
-        // --- 主程式 App ---
-        const App = () => {
-            const [activeTab, setActiveTab] = useState('day1');
-            const [expenses, setExpenses] = useState([]);
-            const [input, setInput] = useState({ item: "", chf: "", twd: "", cat: "food" });
-
-            // 確保 LocalStorage 不會出錯
-            useEffect(() => {
-                try {
-                    const saved = localStorage.getItem('swiss_expenses_v2');
-                    if (saved) setExpenses(JSON.parse(saved));
-                } catch(e) { console.error("Load failed", e); }
-            }, []);
-
-            useEffect(() => {
-                localStorage.setItem('swiss_expenses_v2', JSON.stringify(expenses));
-            }, [expenses]);
-
-            // 當 React 準備好後，隱藏 Loading 畫面
-            useEffect(() => {
-                const loader = document.getElementById('loading');
-                if(loader) loader.style.display = 'none';
-            }, []);
-
-            const handleChf = (val) => setInput({ ...input, chf: val, twd: val ? Math.round(val * TRIP_INFO.exchangeRate) : "" });
-            const addExp = () => {
-                if (!input.item || !input.chf) return;
-                setExpenses([{ id: Date.now(), ...input, chf: parseFloat(input.chf), twd: parseInt(input.twd) }, ...expenses]);
-                setInput({ item: "", chf: "", twd: "", cat: "food" });
-            };
-
-            const SidebarItem = ({ id, icon, label }) => (
-                <button onClick={() => setActiveTab(id)} className={`w-full py-4 flex flex-col items-center relative active-scale ${activeTab === id ? 'text-[#D4AF37]' : 'text-gray-500'}`}>
-                    {activeTab === id && <div className="absolute left-0 top-1/2 -translate-y-1/2 h-6 w-1 bg-[#D4AF37] rounded-r-full shadow-[0_0_8px_#D4AF37]"/>}
-                    <Icon path={icons[icon]} size={24} className="mb-1" />
-                    <span className="text-[10px] font-bold">{label}</span>
-                </button>
-            );
-
-            return (
-                <div className="flex h-screen w-screen overflow-hidden bg-black text-white font-sans">
-                    {/* 左側欄 */}
-                    <div className="w-[72px] bg-[#0c0c0e] border-r border-gray-900 flex flex-col items-center pt-safe pb-safe z-50 flex-shrink-0">
-                        <div className="pt-4 pb-2 text-center">
-                            <div className="w-10 h-10 rounded-full bg-gradient-to-b from-[#D4AF37] to-[#8C6D1F] flex items-center justify-center text-black font-black text-xs mx-auto mb-1">
-                                {TRIP_INFO.daysUntil}
-                            </div>
-                            <div className="text-[9px] text-gray-500 font-bold">DAYS</div>
-                        </div>
-                        <div className="w-full h-[1px] bg-gray-800 my-1"></div>
-                        <div className="flex-1 w-full overflow-y-auto no-scrollbar">
-                            <SidebarItem id="day1" icon="plane" label="D1" />
-                            <SidebarItem id="day2" icon="mapPin" label="D2" />
-                            <SidebarItem id="day3" icon="mountain" label="D3" />
-                            <SidebarItem id="day4" icon="snowflake" label="D4" />
-                            <SidebarItem id="day5" icon="mountain" label="D5" />
-                            <SidebarItem id="day6" icon="train" label="D6" />
-                            <SidebarItem id="day7" icon="camera" label="D7" />
-                            <SidebarItem id="day8" icon="train" label="D8" />
-                            <SidebarItem id="day9" icon="plane" label="D9" />
-                        </div>
-                        <div className="w-full border-t border-gray-800 pt-2 pb-6 bg-[#0c0c0e]">
-                            <SidebarItem id="expense" icon="wallet" label="記帳" />
-                        </div>
-                    </div>
-
-                    {/* 右側內容 */}
-                    <div className="flex-1 h-full overflow-hidden relative">
-                        {activeTab === 'expense' ? (
-                            <div className="h-full overflow-y-auto no-scrollbar p-6 pb-32">
-                                <h2 className="text-2xl font-bold mb-1">瑞士記帳本</h2>
-                                <p className="text-xs text-gray-500 mb-6">匯率: 1 CHF ≈ {TRIP_INFO.exchangeRate} TWD</p>
-                                <div className="bg-gradient-to-br from-[#D4AF37] to-[#B59124] rounded-2xl p-5 mb-6 text-black shadow-lg">
-                                    <div className="text-xs font-bold opacity-70 uppercase">總花費 (NTD)</div>
-                                    <div className="text-4xl font-black mt-1">${expenses.reduce((a,c)=>a+c.twd,0).toLocaleString()}</div>
-                                </div>
-                                <div className="bg-[#1C1C1E] p-4 rounded-xl space-y-3 mb-6 border border-gray-800">
-                                    <input type="text" placeholder="品項" value={input.item} onChange={e=>setInput({...input, item: e.target.value})} className="w-full bg-[#2C2C2E] p-3 rounded-lg text-white outline-none focus:ring-1 focus:ring-[#D4AF37]" />
-                                    <div className="flex gap-2">
-                                        <input type="number" placeholder="CHF" value={input.chf} onChange={e=>handleChf(e.target.value)} className="w-1/2 bg-[#2C2C2E] p-3 rounded-lg text-white outline-none focus:ring-1 focus:ring-[#D4AF37]" />
-                                        <input type="text" value={input.twd} readOnly className="w-1/2 bg-[#1A1A1C] p-3 rounded-lg text-gray-400 outline-none" />
-                                    </div>
-                                    <button onClick={addExp} className="w-full bg-[#D4AF37] text-black font-bold py-3 rounded-lg active-scale">新增紀錄</button>
-                                </div>
-                                <div className="space-y-2">
-                                    {expenses.map(ex => (
-                                        <div key={ex.id} className="bg-[#1C1C1E] p-4 rounded-xl flex justify-between items-center border border-gray-800/50">
-                                            <div><div className="font-bold text-sm">{ex.item}</div><div className="text-xs text-gray-500">Fr. {ex.chf}</div></div>
-                                            <div className="flex items-center gap-3"><div className="text-[#D4AF37] font-bold">${ex.twd}</div><button onClick={()=>setExpenses(expenses.filter(e=>e.id!==ex.id))} className="text-gray-600">✕</button></div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        ) : (
-                            <div className="h-full overflow-y-auto no-scrollbar relative">
-                                <div className="px-6 pt-10 pb-6">
-                                    <div className="flex justify-between items-start mb-4">
-                                        <div className="inline-flex items-center gap-2 bg-[#1C1C1E] px-3 py-1 rounded-full border border-gray-800">
-                                            <span className="w-2 h-2 rounded-full bg-[#D4AF37] animate-pulse"></span>
-                                            <span className="text-[#D4AF37] text-xs font-bold uppercase tracking-wider">{ITINERARY_DATA[activeTab].date}</span>
-                                        </div>
-                                        {ITINERARY_DATA[activeTab].weather && (
-                                            <div className="glass px-3 py-1.5 rounded-lg flex items-center gap-2">
-                                                <Icon path={icons[ITINERARY_DATA[activeTab].weather.icon] || icons.sun} size={16} className={ITINERARY_DATA[activeTab].weather.icon === 'sun' ? 'text-yellow-400' : ITINERARY_DATA[activeTab].weather.icon === 'snowflake' ? 'text-blue-300' : 'text-gray-400'} />
-                                                <div className="flex flex-col items-end leading-none">
-                                                    <span className="text-sm font-bold">{ITINERARY_DATA[activeTab].weather.temp}</span>
-                                                    <span className="text-[9px] text-gray-400">{ITINERARY_DATA[activeTab].weather.text}</span>
-                                                </div>
-                                            </div>
-                                        )}
-                                    </div>
-                                    <h1 className="text-3xl font-black mb-3 leading-tight">{ITINERARY_DATA[activeTab].title}</h1>
-                                    <p className="text-gray-400 text-sm leading-relaxed">{ITINERARY_DATA[activeTab].description}</p>
-                                    <div className="flex flex-wrap gap-2 mt-4">
-                                        {ITINERARY_DATA[activeTab].tags.map(tag => (
-                                            <span key={tag} className="text-[10px] font-bold bg-[#1C1C1E] text-gray-300 px-2 py-1 rounded border border-gray-800">#{tag}</span>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                <div className="px-6 pb-24">
-                                    {ITINERARY_DATA[activeTab].tip && (
-                                        <div className="mb-6 bg-[#151516] border-l-4 border-[#D4AF37] rounded-r-xl p-4 shadow-lg">
-                                            <h3 className="text-[#D4AF37] font-bold text-xs mb-1 flex items-center gap-1"><Icon path={icons.sun} size={14}/> 小撇步</h3>
-                                            <p className="text-gray-300 text-xs leading-relaxed">{ITINERARY_DATA[activeTab].tip}</p>
-                                        </div>
-                                    )}
-
-                                    <div className="space-y-1 relative pl-2">
-                                        {ITINERARY_DATA[activeTab].timeline.map((ev, i) => (
-                                            <div key={i} className="flex gap-4 relative pb-8 last:pb-0">
-                                                <div className="flex flex-col items-center w-8 flex-shrink-0">
-                                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center z-10 border-2 border-[#121212] ${ev.type==='flight'?'bg-[#003060] text-white': ev.type==='transport'?'bg-[#263238] text-gray-300': 'bg-[#1A332A] text-[#A5D6A7]'}`}>
-                                                        <Icon path={icons[ev.icon] || icons.mapPin} size={14} />
-                                                    </div>
-                                                    {i !== ITINERARY_DATA[activeTab].timeline.length - 1 && <div className="w-[1px] flex-1 bg-gray-800 my-1"></div>}
-                                                </div>
-                                                <div className="flex-1 pt-1">
-                                                    <div className="flex items-baseline gap-2 mb-1">
-                                                        <span className="text-[#D4AF37] font-mono text-lg font-bold">{ev.time}</span>
-                                                        {ev.endTime && <span className="text-gray-500 text-xs">{ev.endTime}</span>}
-                                                    </div>
-                                                    <div className="bg-[#1C1C1E] rounded-xl p-3 border border-gray-800/50">
-                                                        <h3 className="font-bold mb-1">{ev.title}</h3>
-                                                        {ev.desc && <p className="text-gray-400 text-xs">{ev.desc}</p>}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-                    </div>
+    <div id="tools-view" class="view">
+        <div class="detail-hero">
+            <div class="detail-date">TOOLS</div>
+            <h1 class="detail-title">💰 記帳 & 換匯</h1>
+        </div>
+        <div class="tool-card">
+            <div class="tool-title">
+                <span>🇨🇭 快速換匯</span>
+                <div>
+                    <span style="font-size:0.8rem; color:#888;">匯率: </span>
+                    <input type="number" id="exchange-rate" class="rate-input" value="36.5" onchange="updateConverter()">
                 </div>
-            );
-        };
+            </div>
+            <div class="converter-row">
+                <div class="input-group">
+                    <label>CHF (瑞郎)</label>
+                    <input type="number" id="input-chf" class="input-field" placeholder="0" oninput="convertFromCHF()">
+                </div>
+                <div style="font-size:1.5rem; color:#ccc;">➝</div>
+                <div class="input-group">
+                    <label>TWD (台幣)</label>
+                    <input type="number" id="input-twd" class="input-field" placeholder="0" oninput="convertFromTWD()">
+                </div>
+            </div>
+        </div>
+        <div class="total-display">
+            <div class="total-amount">CHF <span id="total-chf">0.00</span></div>
+            <div class="total-sub">約 TWD <span id="total-twd">0</span></div>
+        </div>
+        <div class="tool-card">
+            <div class="tool-title">📝 新增消費</div>
+            <div class="expense-form">
+                <input type="text" id="expense-name" class="expense-input" placeholder="項目 (如: 晚餐)">
+                <input type="number" id="expense-amount" class="amount-input" placeholder="CHF">
+                <button class="btn-add" onclick="addExpense()">+</button>
+            </div>
+            <ul id="expense-list" class="expense-list"></ul>
+            <div style="text-align:center; margin-top:20px; font-size:0.8rem; color:#aaa;">資料自動儲存中</div>
+        </div>
+    </div>
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
+    <div id="day1" class="view">
+        <div class="detail-hero"><div class="detail-date">1/13 (二) | DAY 1</div><h1 class="detail-title">抵達 & 琉森<br>湖光山色</h1></div>
+        <div class="tips-box"><div class="tips-header">💡 琉森豆知識</div><div class="tips-content"><ul><li><b>垂死獅子像：</b>紀念1792年為保護法國路易十六而戰死的瑞士傭兵。</li><li><b>喝水：</b>琉森市區有200多個噴泉，水都可以直接喝，非常乾淨。</li></ul></div></div>
+        <div class="timeline">
+            <div class="time-block"><div class="time-dot"></div><div class="time-label">06:10</div><div class="activity-name">抵達蘇黎世機場</div><div class="activity-desc">過海關、領行李。直接走到機場對面的「Zürich Flughafen」火車站。</div></div>
+            <div class="time-block"><div class="time-dot"></div><div class="time-label">07:30</div><div class="activity-name">前往琉森</div><div class="activity-desc">搭乘直達車。<br><span class="tag tag-train">IR75 / IC</span></div></div>
+            <div class="time-block"><div class="time-dot"></div><div class="time-label">09:00</div><div class="activity-name">寄放行李</div><div class="activity-desc">Hotel Pickwick and Pub (河岸邊)。</div></div>
+            <div class="time-block"><div class="time-dot"></div><div class="time-label">上午</div><div class="activity-name">瑞吉山 (Mt. Rigi)</div>
+                <div class="activity-desc">
+                    被稱為「山巒皇后」，擁有歐洲第一條登山鐵路。
+                    <ul class="detail-list">
+                        <li><b>體驗：</b>搭船遊湖至 Vitznau，轉紅色火車上山。</li>
+                        <li><b>視野：</b>山頂 Rigi Kulm 可360度俯瞰阿爾卑斯山脈。</li>
+                        <li><b>優惠：</b>持 STP 全程免費 (極少數完全免費的山)。</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="time-block"><div class="time-dot"></div><div class="time-label">下午</div><div class="activity-name">琉森老城漫遊</div>
+                <div class="activity-desc">
+                    <ul class="detail-list">
+                        <li><b>垂死獅子像：</b>馬克吐溫形容是「世上最悲傷的石頭」。</li>
+                        <li><b>穆塞格城牆：</b>現存最完整的防禦城牆，可登塔看市景。</li>
+                        <li><b>卡貝爾橋：</b>歐洲最古老木橋。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="hotel-card"><div class="hotel-label">CONFIRMED</div><div class="hotel-name">Hotel Pickwick and Pub</div></div>
+    </div>
+
+    <div id="day2" class="view">
+        <div class="detail-hero"><div class="detail-date">1/14 (三) | DAY 2</div><h1 class="detail-title">黃金列車 &<br>格林德瓦</h1></div>
+        <div class="tips-box"><div class="tips-header">💡 格林德瓦必看</div><div class="tips-content"><ul><li><b>艾格峰北壁：</b>登山界的「死亡之牆」，垂直落差1800米，就在鎮上正上方。</li><li><b>木屋群：</b>這裡的木屋依照斜坡地形建造，風景如畫。</li></ul></div></div>
+        <div class="timeline">
+            <div class="time-block"><div class="time-dot"></div><div class="time-label">08:06</div><div class="activity-name">黃金列車路線</div>
+                <div class="activity-desc">
+                    Luzern -> Interlaken Ost。
+                    <ul class="detail-list">
+                        <li><b>座位建議：</b>請坐「行進方向右側」，布里恩茲湖的藍綠色湖水全程相伴。</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="time-block"><div class="time-dot"></div><div class="time-label">10:00</div><div class="activity-name">轉乘登山火車</div><div class="activity-desc">Interlaken Ost -> Grindelwald。</div></div>
+            <div class="time-block"><div class="time-dot"></div><div class="time-label">11:00</div><div class="activity-name">Check-in</div><div class="activity-desc">Hotel Tschuggen。</div></div>
+            <div class="time-block"><div class="time-dot"></div><div class="time-label">下午</div><div class="activity-name">雙湖或小鎮漫遊</div>
+                <div class="activity-desc">
+                    可搭公車去圖恩湖 (Lake Thun)，或在格林德瓦小鎮沿著 Dorfstrasse 逛逛。
+                </div>
+            </div>
+        </div>
+        <div class="hotel-card"><div class="hotel-label">CONFIRMED</div><div class="hotel-name">Hotel Tschuggen</div></div>
+    </div>
+
+    <div id="day3" class="view">
+        <div class="detail-hero"><div class="detail-date">1/15 (四) | DAY 3</div><h1 class="detail-title">歐洲屋脊<br>少女峰</h1></div>
+        
+        <div class="backup-box">
+            <div class="backup-header">☔ 天氣不好去哪裡？(備案)</div>
+            <div class="backup-content">
+                如果 Webcam 顯示山頂白牆一片，建議放棄上山 (票很貴)，改走以下行程：
+                <span class="backup-title">方案 A：特呂默爾河瀑布 (Trümmelbach Falls)</span>
+                位於 Lauterbrunnen，是世界唯一在山體內的冰河瀑布，下雨天水量更大更壯觀，且在室內不怕淋濕。
+                <span class="backup-title">方案 B：聖貝納圖斯洞穴 (St. Beatus Caves)</span>
+                位於圖恩湖畔的鐘乳石洞，完全室內，傳說曾有巨龍居住。
+            </div>
+        </div>
+
+        <div class="timeline">
+            <div class="time-block"><div class="time-dot"></div><div class="time-label">08:00 (天氣好)</div><div class="activity-name">Eiger Express</div>
+                <div class="activity-desc">
+                    從 Grindelwald Terminal 搭乘最新的三索纜車。只需 15 分鐘直達 Eigergletscher 站。
+                </div>
+            </div>
+            <div class="time-block"><div class="time-dot"></div><div class="time-label">上午</div><div class="activity-name">少女峰頂 (Jungfraujoch)</div>
+                <div class="activity-desc">
+                    冰宮、斯芬克斯觀景台 (阿萊奇冰河)、Lindt 巧克力店。
+                </div>
+            </div>
+            <div class="time-block"><div class="time-dot"></div><div class="time-label">下午</div><div class="activity-name">Wengen 環狀下山</div>
+                <div class="activity-desc">
+                    經由 Wengen (威根小鎮) 和 Lauterbrunnen (瀑布鎮) 下山，不走回頭路。
+                </div>
+            </div>
+        </div>
+        <div class="hotel-card"><div class="hotel-label">CONFIRMED</div><div class="hotel-name">Hotel Tschuggen</div></div>
+    </div>
+
+    <div id="day4" class="view">
+        <div class="detail-hero"><div class="detail-date">1/16 (五) | DAY 4</div><h1 class="detail-title">伯恩 (Bern)<br>購物與文化</h1></div>
+        <div class="tips-box"><div class="tips-header">💡 伯恩豆知識</div><div class="tips-content"><ul><li><b>食童噴泉：</b>老城有好幾座奇怪噴泉，最有名的是「食人魔正在吃小孩」。</li><li><b>愛因斯坦：</b>相對論就是他在伯恩居住時發表的。</li></ul></div></div>
+        <div class="timeline">
+            <div class="time-block"><div class="time-dot"></div><div class="time-label">08:30</div><div class="activity-name">火車前往伯恩</div></div>
+            <div class="time-block"><div class="time-dot"></div><div class="time-label">上午</div><div class="activity-name">拱廊街購物</div>
+                <div class="activity-desc">
+                    歐洲最長拱廊 (Lauben)，下雪也能優雅逛街。必逛 Loeb 百貨與 Spitalgasse 街區。
+                </div>
+            </div>
+            <div class="time-block"><div class="time-dot"></div><div class="time-label">13:00</div><div class="activity-name">午餐</div><div class="activity-desc">Kornhauskeller (穀倉地窖餐廳) 或 Altes Tramdepot。</div></div>
+            <div class="time-block"><div class="time-dot"></div><div class="time-label">下午</div><div class="activity-name">老城深度遊</div>
+                <div class="activity-desc">
+                    鐘塔 (Zytglogge) 看整點報時 -> 玫瑰園 (Rosengarten) 俯瞰老城。
+                </div>
+            </div>
+        </div>
+        <div class="hotel-card"><div class="hotel-label">CONFIRMED</div><div class="hotel-name">Hotel Tschuggen</div></div>
+    </div>
+
+    <div id="day5" class="view">
+        <div class="detail-hero"><div class="detail-date">1/17 (六) | DAY 5</div><h1 class="detail-title">前進<br>采爾馬特</h1></div>
+        <div class="tips-box"><div class="tips-header">💡 Zermatt 豆知識</div><div class="tips-content"><ul><li><b>電動車：</b>鎮上禁止燃油車，只有像玩具一樣的電動計程車。</li><li><b>三角巧克力：</b>Toblerone 的形狀就是馬特洪峰。</li></ul></div></div>
+        <div class="timeline">
+            <div class="time-block"><div class="time-dot"></div><div class="time-label">08:00</div><div class="activity-name">大移動</div><div class="activity-desc">Grindelwald -> Interlaken -> Visp -> Zermatt。</div></div>
+            <div class="time-block"><div class="time-dot"></div><div class="time-label">下午</div><div class="activity-name">Hinterdorfstrasse 老街</div>
+                <div class="activity-desc">
+                    <b>防鼠設計：</b>注意看舊穀倉柱子與地基之間，有一塊圓形的「防鼠石板」。
+                </div>
+            </div>
+            <div class="time-block"><div class="time-dot"></div><div class="time-label">傍晚</div><div class="activity-name">日落金山</div><div class="activity-desc">前往 Kirchbrücke 橋，這是拍攝馬特洪峰日落變成金色的最佳位置。</div></div>
+        </div>
+        <div class="hotel-card"><div class="hotel-label">CONFIRMED</div><div class="hotel-name">Apartment in Zermatt</div></div>
+    </div>
+
+    <div id="day6" class="view">
+        <div class="detail-hero"><div class="detail-date">1/18 (日) | DAY 6</div><h1 class="detail-title">馬特洪峰<br>360度震撼</h1></div>
+        
+        <div class="backup-box">
+            <div class="backup-header">☔ 山上天氣不好？轉戰城市！</div>
+            <div class="backup-content">
+                如果山上白牆一片，不如利用 STP 搭火車「出山」去鄰近城市，天氣通常會比山區好很多：
+                
+                <span class="backup-title">方案 A：錫永 (Sion) - 古堡雙子城</span>
+                <span class="tag tag-backup">車程約 1hr 20m</span>
+                <br>
+                瓦萊州的首府。這裡以兩座聳立在山丘上的古堡 (Tourbillon & Valère) 聞名，非常有《冰與火之歌》的感覺。老城區很好逛，且是瑞士陽光最充足的城市。
+
+                <span class="backup-title">方案 B：蒙特勒 (Montreux) - 西庸城堡</span>
+                <span class="tag tag-backup">車程約 2hr 30m</span>
+                <br>
+                雖然遠一點，但能直接殺到日內瓦湖畔 (Lac Léman)。必去水上城堡 **Chillon Castle (西庸城堡)**，這也是持 STP 免費參觀的熱門景點。
+            </div>
+        </div>
+
+        <div class="timeline">
+            <div class="time-block"><div class="time-dot"></div><div class="time-label">08:00 (天氣好)</div><div class="activity-name">葛內拉特 (Gornergrat)</div>
+                <div class="activity-desc">
+                    搭乘登山齒軌火車上山。
+                    <ul class="detail-list">
+                        <li><b>看點：</b>這是欣賞馬特洪峰最完美的距離。</li>
+                        <li><b>Riffelsee：</b>如果在夏天是看倒影的神地，冬天則是白雪覆蓋的夢幻湖面。</li>
+                        <li><b>3100 Kulmhotel：</b>歐洲最高的飯店之一，去戶外露台曬太陽喝咖啡。</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="time-block"><div class="time-dot"></div><div class="time-label">下午</div><div class="activity-name">自由活動 / 冰川天堂</div>
+                <div class="activity-desc">
+                    如果體力好，可再去冰川天堂 (Matterhorn Glacier Paradise)，那裡可以摸到萬年冰河，且可眺望義大利。
+                </div>
+            </div>
+            <div class="time-block"><div class="time-dot"></div><div class="time-label">晚餐</div><div class="activity-name">起司鍋 (Fondue)</div><div class="activity-desc">推薦去 Whymper-Stube 或 Restaurant Schäferstube 吃道地的瓦萊州起司鍋。</div></div>
+        </div>
+        <div class="hotel-card"><div class="hotel-label">CONFIRMED</div><div class="hotel-name">Apartment in Zermatt</div></div>
+    </div>
+
+    <div id="day7" class="view">
+        <div class="detail-hero"><div class="detail-date">1/19 (一) | DAY 7</div><h1 class="detail-title">冰河列車<br>絕美鐵道行</h1></div>
+        <div class="tips-box"><div class="tips-header">💡 冰河列車豆知識</div><div class="tips-content"><ul><li><b>世界上最慢的快車：</b>平均時速只有 40 公里，為的是讓乘客慢慢看風景。</li><li><b>傾斜酒杯：</b>車上有賣底部是斜的紀念酒杯，防止爬坡時酒灑出來。</li></ul></div></div>
+        <div class="timeline">
+            <div class="time-block"><div class="time-dot"></div><div class="time-label">08:52 (需確認)</div><div class="activity-name">搭乘冰河列車 (PE 902)</div>
+                <div class="activity-desc">
+                    Zermatt -> Chur (庫爾)。
+                    <ul class="detail-list">
+                        <li><b>Oberalp Pass：</b>全線最高點 (2033m)，像是行駛在雪原中。</li>
+                        <li><b>萊茵河大峽谷 (Ruinaulta)：</b>被稱為瑞士大峽谷，白色岩壁非常壯觀。</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="time-block"><div class="time-dot"></div><div class="time-label">下午</div><div class="activity-name">蘭德瓦瑟高架橋</div>
+                <div class="activity-desc">
+                    <b>⚠️ 必拍重點！</b>
+                    經過 Filisur 站後不久，火車會行駛在 65 米高的高架橋上並轉彎進入隧道。請準備好相機捕捉火車過彎的經典畫面。
+                </div>
+            </div>
+            <div class="time-block"><div class="time-dot"></div><div class="time-label">14:26</div><div class="activity-name">抵達庫爾 (Chur)</div><div class="activity-desc">瑞士最古老的城市。在此轉乘一般快車前往蘇黎世。</div></div>
+        </div>
+        <div class="hotel-card"><div class="hotel-label">CONFIRMED</div><div class="hotel-name">Trip Inn Zurich Hotel</div></div>
+    </div>
+
+    <div id="day8" class="view">
+        <div class="detail-hero"><div class="detail-date">1/20 (二) | DAY 8</div><h1 class="detail-title">最後巡禮 &<br>平安返家</h1></div>
+        <div class="tips-box"><div class="tips-header">💡 蘇黎世必買</div><div class="tips-content"><ul><li><b>Sprüngli：</b>蘇黎世甜點老店，必買「Luxemburgerli」迷你馬卡龍。</li><li><b>Freitag：</b>蘇黎世發源的環保包，每一款都是獨一無二的卡車帆布做成的。</li></ul></div></div>
+        <div class="timeline">
+            <div class="time-block"><div class="time-dot"></div><div class="time-label">早上</div><div class="activity-name">市區觀光 / 萊茵瀑布</div>
+                <div class="activity-desc">
+                    <ul class="detail-list">
+                        <li><b>林登霍夫山 (Lindenhof)：</b>韓劇《愛的迫降》片頭取景地，俯瞰蘇黎世老城。</li>
+                        <li><b>萊茵瀑布：</b>如果時間夠，可搭火車去歐洲最大瀑布 (Rhine Falls)。</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="time-block"><div class="time-dot"></div><div class="time-label">下午</div><div class="activity-name">班霍夫大街</div><div class="activity-desc">全球最昂貴的購物大道之一，做最後的採買。</div></div>
+            <div class="time-block"><div class="time-dot"></div><div class="time-label">19:30</div><div class="activity-name">抵達機場 (ZRH)</div><div class="activity-desc">辦理退稅、托運。</div></div>
+            <div class="time-block"><div class="time-dot"></div><div class="time-label">22:40</div><div class="activity-name">飛機起飛</div><div class="activity-desc">LX138 飛往香港，轉機回台北。</div></div>
+        </div>
+        <div class="hotel-card"><div class="hotel-label">HOME</div><div class="hotel-name">甜蜜的家 🇹🇼</div></div>
+    </div>
+
+    <nav class="bottom-nav">
+        <div class="nav-item active" id="nav-home" onclick="goHome()">
+            <span class="nav-icon">📅</span>行程
+        </div>
+        <div class="nav-item" id="nav-tools" onclick="goTools()">
+            <span class="nav-icon">💰</span>記帳/換匯
+        </div>
+    </nav>
+
+    <script>
+        // --- Navigation Logic ---
+        function openDay(dayId) {
+            hideAllViews();
+            document.getElementById(dayId).classList.add('active');
+            document.querySelector('.back-btn').style.display = 'block';
+            window.scrollTo(0, 0);
+        }
+
+        function goHome() {
+            hideAllViews();
+            document.getElementById('home-view').classList.add('active');
+            document.querySelector('.back-btn').style.display = 'none';
+            updateNavState('nav-home');
+            window.scrollTo(0, 0);
+        }
+
+        function goTools() {
+            hideAllViews();
+            document.getElementById('tools-view').classList.add('active');
+            document.querySelector('.back-btn').style.display = 'none';
+            updateNavState('nav-tools');
+            renderExpenses();
+        }
+
+        function hideAllViews() {
+            document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+        }
+
+        function updateNavState(activeId) {
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            document.getElementById(activeId).classList.add('active');
+        }
+
+        // --- Currency Converter Logic ---
+        function getRate() { return parseFloat(document.getElementById('exchange-rate').value) || 36.5; }
+        function convertFromCHF() {
+            const chf = parseFloat(document.getElementById('input-chf').value);
+            if (!isNaN(chf)) document.getElementById('input-twd').value = (chf * getRate()).toFixed(0);
+        }
+        function convertFromTWD() {
+            const twd = parseFloat(document.getElementById('input-twd').value);
+            if (!isNaN(twd)) document.getElementById('input-chf').value = (twd / getRate()).toFixed(2);
+        }
+        function updateConverter() { convertFromCHF(); renderExpenses(); }
+
+        // --- Expense Tracker Logic ---
+        let expenses = JSON.parse(localStorage.getItem('swissExpenses')) || [];
+        function addExpense() {
+            const name = document.getElementById('expense-name').value;
+            const amount = parseFloat(document.getElementById('expense-amount').value);
+            if (name && !isNaN(amount)) {
+                expenses.push({ id: Date.now(), name: name, amount: amount });
+                saveAndRender();
+                document.getElementById('expense-name').value = '';
+                document.getElementById('expense-amount').value = '';
+            } else { alert('請輸入項目名稱和金額'); }
+        }
+        function deleteExpense(id) { expenses = expenses.filter(e => e.id !== id); saveAndRender(); }
+        function saveAndRender() { localStorage.setItem('swissExpenses', JSON.stringify(expenses)); renderExpenses(); }
+        function renderExpenses() {
+            const list = document.getElementById('expense-list');
+            list.innerHTML = '';
+            let totalCHF = 0;
+            expenses.slice().reverse().forEach(expense => {
+                totalCHF += expense.amount;
+                const li = document.createElement('li');
+                li.className = 'expense-item';
+                li.innerHTML = `<span class="expense-name">${expense.name}</span><div style="display:flex; align-items:center;"><span class="expense-price">${expense.amount.toFixed(2)}</span><span class="btn-delete" onclick="deleteExpense(${expense.id})">✕</span></div>`;
+                list.appendChild(li);
+            });
+            document.getElementById('total-chf').innerText = totalCHF.toFixed(2);
+            document.getElementById('total-twd').innerText = (totalCHF * getRate()).toFixed(0);
+        }
+        renderExpenses();
     </script>
 </body>
 </html>
