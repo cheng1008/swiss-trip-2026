@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>瑞士10天深度之旅 🇨🇭</title>
+    <title>瑞士10天深度之旅 (含品牌&巧克力特企) 🇨🇭</title>
     <style>
         :root {
             --primary: #D80027; /* Swiss Red */
@@ -14,6 +14,7 @@
             --accent: #007AFF;
             --danger: #FF3B30;
             --rain: #546e7a;    /* Color for backup plans */
+            --choco: #795548;   /* Chocolate Color */
         }
 
         body {
@@ -22,7 +23,7 @@
             color: var(--text);
             margin: 0;
             padding: 0;
-            padding-bottom: 90px; /* Space for bottom nav */
+            padding-bottom: 90px;
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -153,6 +154,17 @@
         .backup-header { display: flex; align-items: center; font-weight: 700; color: var(--rain); margin-bottom: 8px; }
         .backup-content { font-size: 0.9rem; color: #455a64; line-height: 1.5; }
         .backup-title { font-weight: bold; display: block; margin-top: 10px; color: #333; }
+        
+        /* Local Brands Box */
+        .brand-box {
+            background: #e8eaf6; border: 1px solid #c5cae9; border-radius: 12px; padding: 15px; margin-bottom: 20px;
+        }
+        .brand-header { font-weight: 700; color: #3f51b5; margin-bottom: 8px; display: flex; align-items: center;}
+        .brand-list { display: flex; flex-wrap: wrap; gap: 8px; }
+        .brand-tag { 
+            background: white; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; 
+            border: 1px solid #e0e0e0; color: #555; font-weight: 600;
+        }
 
         .timeline { position: relative; padding-left: 20px; }
         .timeline::before { content: ''; position: absolute; left: 6px; top: 5px; bottom: 0; width: 2px; background: #e0e0e0; }
@@ -168,6 +180,7 @@
         .tag { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; margin-top: 5px; background: #e3f2fd; color: #1565c0; }
         .tag-train { background: #e3f2fd; color: #1565c0; }
         .tag-backup { background: #fff; border: 1px solid var(--rain); color: var(--rain); }
+        .tag-choco { background: #efebe9; color: var(--choco); border: 1px solid #d7ccc8; }
 
         .hotel-card { background: var(--card); border-radius: 12px; padding: 15px; border-left: 5px solid #2e7d32; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .hotel-label { font-size: 0.75rem; color: #2e7d32; font-weight: 700; margin-bottom: 5px; }
@@ -191,7 +204,7 @@
 
         <div class="day-list-item" onclick="openDay('day1')">
             <div class="day-number">D1</div>
-            <div class="day-info"><h3>抵達 & 琉森湖光山色</h3><p>1/13 (二) | 蘇黎世 -> 琉森</p></div><div class="arrow">❯</div>
+            <div class="day-info"><h3>抵達 & 琉森 (品牌巡禮)</h3><p>1/13 (二) | 蘇黎世 -> 琉森</p></div><div class="arrow">❯</div>
         </div>
         <div class="day-list-item" onclick="openDay('day2')">
             <div class="day-number">D2</div>
@@ -199,19 +212,19 @@
         </div>
         <div class="day-list-item" onclick="openDay('day3')">
             <div class="day-number">D3</div>
-            <div class="day-info"><h3>少女峰 (含雨備)</h3><p>1/15 (四) | 歐洲屋脊 or 瀑布</p></div><div class="arrow">❯</div>
+            <div class="day-info"><h3>少女峰 (含巧克力雨備)</h3><p>1/15 (四) | 歐洲屋脊 or 瀑布</p></div><div class="arrow">❯</div>
         </div>
         <div class="day-list-item" onclick="openDay('day4')">
             <div class="day-number">D4</div>
-            <div class="day-info"><h3>首都伯恩 拱廊街購物</h3><p>1/16 (五) | 伯恩一日遊</p></div><div class="arrow">❯</div>
+            <div class="day-info"><h3>伯恩 (拱廊街名店)</h3><p>1/16 (五) | 伯恩購物日</p></div><div class="arrow">❯</div>
         </div>
         <div class="day-list-item" onclick="openDay('day5')">
             <div class="day-number">D5</div>
-            <div class="day-info"><h3>前進馬特洪峰</h3><p>1/17 (六) | 格林德瓦 -> 采爾馬特</p></div><div class="arrow">❯</div>
+            <div class="day-info"><h3>前進采爾馬特</h3><p>1/17 (六) | 格林德瓦 -> 采爾馬特</p></div><div class="arrow">❯</div>
         </div>
         <div class="day-list-item" onclick="openDay('day6')">
             <div class="day-number">D6</div>
-            <div class="day-info"><h3>葛內拉特 (含雨備)</h3><p>1/18 (日) | 轉戰城市 or 觀景台</p></div><div class="arrow">❯</div>
+            <div class="day-info"><h3>馬特洪峰 (含工廠雨備)</h3><p>1/18 (日) | 360度雪景 or 巧克力</p></div><div class="arrow">❯</div>
         </div>
         <div class="day-list-item" onclick="openDay('day7')">
             <div class="day-number">D7</div>
@@ -219,7 +232,7 @@
         </div>
         <div class="day-list-item" onclick="openDay('day8')">
             <div class="day-number">D8</div>
-            <div class="day-info"><h3>蘇黎世/瀑布 & 返家</h3><p>1/20 (二) | 蘇黎世周邊</p></div><div class="arrow">❯</div>
+            <div class="day-info"><h3>蘇黎世 (最大巧克力)</h3><p>1/20 (二) | 蘇黎世周邊</p></div><div class="arrow">❯</div>
         </div>
     </div>
 
@@ -266,28 +279,35 @@
 
     <div id="day1" class="view">
         <div class="detail-hero"><div class="detail-date">1/13 (二) | DAY 1</div><h1 class="detail-title">抵達 & 琉森<br>湖光山色</h1></div>
-        <div class="tips-box"><div class="tips-header">💡 琉森豆知識</div><div class="tips-content"><ul><li><b>垂死獅子像：</b>紀念1792年為保護法國路易十六而戰死的瑞士傭兵。</li><li><b>喝水：</b>琉森市區有200多個噴泉，水都可以直接喝，非常乾淨。</li></ul></div></div>
+        
+        <div class="brand-box">
+            <div class="brand-header">🛍️ 在地品牌與名店</div>
+            <div class="brand-list">
+                <span class="brand-tag">Bucherer (鐘錶)</span>
+                <span class="brand-tag">Bachmann (粉紅牆巧克力)</span>
+                <span class="brand-tag">Läderach (巧克力)</span>
+                <span class="brand-tag">Victorinox (瑞士刀)</span>
+            </div>
+        </div>
+
+        <div class="tips-box"><div class="tips-header">💡 琉森豆知識</div><div class="tips-content"><ul><li><b>Bachmann：</b>琉森起家的烘焙名店，店內有「流動巧克力牆」，必買水滴狀巧克力。</li><li><b>垂死獅子像：</b>紀念1792年為保護法國路易十六而戰死的瑞士傭兵。</li></ul></div></div>
+        
         <div class="timeline">
             <div class="time-block"><div class="time-dot"></div><div class="time-label">06:10</div><div class="activity-name">抵達蘇黎世機場</div><div class="activity-desc">過海關、領行李。直接走到機場對面的「Zürich Flughafen」火車站。</div></div>
             <div class="time-block"><div class="time-dot"></div><div class="time-label">07:30</div><div class="activity-name">前往琉森</div><div class="activity-desc">搭乘直達車。<br><span class="tag tag-train">IR75 / IC</span></div></div>
             <div class="time-block"><div class="time-dot"></div><div class="time-label">09:00</div><div class="activity-name">寄放行李</div><div class="activity-desc">Hotel Pickwick and Pub (河岸邊)。</div></div>
             <div class="time-block"><div class="time-dot"></div><div class="time-label">上午</div><div class="activity-name">瑞吉山 (Mt. Rigi)</div>
                 <div class="activity-desc">
-                    被稱為「山巒皇后」，擁有歐洲第一條登山鐵路。
+                    被稱為「山巒皇后」。持 STP 全程免費。
                     <ul class="detail-list">
                         <li><b>體驗：</b>搭船遊湖至 Vitznau，轉紅色火車上山。</li>
                         <li><b>視野：</b>山頂 Rigi Kulm 可360度俯瞰阿爾卑斯山脈。</li>
-                        <li><b>優惠：</b>持 STP 全程免費 (極少數完全免費的山)。</li>
                     </ul>
                 </div>
             </div>
             <div class="time-block"><div class="time-dot"></div><div class="time-label">下午</div><div class="activity-name">琉森老城漫遊</div>
                 <div class="activity-desc">
-                    <ul class="detail-list">
-                        <li><b>垂死獅子像：</b>馬克吐溫形容是「世上最悲傷的石頭」。</li>
-                        <li><b>穆塞格城牆：</b>現存最完整的防禦城牆，可登塔看市景。</li>
-                        <li><b>卡貝爾橋：</b>歐洲最古老木橋。</li>
-                    </ul>
+                    垂死獅子像 -> 穆塞格城牆 -> 卡貝爾橋。
                 </div>
             </div>
         </div>
@@ -321,13 +341,15 @@
         <div class="detail-hero"><div class="detail-date">1/15 (四) | DAY 3</div><h1 class="detail-title">歐洲屋脊<br>少女峰</h1></div>
         
         <div class="backup-box">
-            <div class="backup-header">☔ 天氣不好去哪裡？(備案)</div>
+            <div class="backup-header">☔ 天氣不好去哪裡？(含巧克力)</div>
             <div class="backup-content">
-                如果 Webcam 顯示山頂白牆一片，建議放棄上山 (票很貴)，改走以下行程：
-                <span class="backup-title">方案 A：特呂默爾河瀑布 (Trümmelbach Falls)</span>
-                位於 Lauterbrunnen，是世界唯一在山體內的冰河瀑布，下雨天水量更大更壯觀，且在室內不怕淋濕。
-                <span class="backup-title">方案 B：聖貝納圖斯洞穴 (St. Beatus Caves)</span>
-                位於圖恩湖畔的鐘乳石洞，完全室內，傳說曾有巨龍居住。
+                如果山上下大雪或白牆，建議放棄上山：
+                <span class="backup-title">方案 A (巧克力)：Funky Chocolate Club</span>
+                <span class="tag tag-choco">Interlaken</span><br>
+                下山去 Interlaken 的巧克力俱樂部，參加 DIY 課程或盡情試吃，適合全家同樂。
+                
+                <span class="backup-title">方案 B：特呂默爾河瀑布 (Trümmelbach)</span>
+                位於 Lauterbrunnen，在室內看冰河瀑布，不怕淋濕。
             </div>
         </div>
 
@@ -339,7 +361,8 @@
             </div>
             <div class="time-block"><div class="time-dot"></div><div class="time-label">上午</div><div class="activity-name">少女峰頂 (Jungfraujoch)</div>
                 <div class="activity-desc">
-                    冰宮、斯芬克斯觀景台 (阿萊奇冰河)、Lindt 巧克力店。
+                    冰宮、斯芬克斯觀景台 (阿萊奇冰河)。<br>
+                    <b>Lindt Shop：</b>山上有世界海拔最高的巧克力店，可買紀念款。
                 </div>
             </div>
             <div class="time-block"><div class="time-dot"></div><div class="time-label">下午</div><div class="activity-name">Wengen 環狀下山</div>
@@ -353,18 +376,31 @@
 
     <div id="day4" class="view">
         <div class="detail-hero"><div class="detail-date">1/16 (五) | DAY 4</div><h1 class="detail-title">伯恩 (Bern)<br>購物與文化</h1></div>
-        <div class="tips-box"><div class="tips-header">💡 伯恩豆知識</div><div class="tips-content"><ul><li><b>食童噴泉：</b>老城有好幾座奇怪噴泉，最有名的是「食人魔正在吃小孩」。</li><li><b>愛因斯坦：</b>相對論就是他在伯恩居住時發表的。</li></ul></div></div>
+        
+        <div class="brand-box">
+            <div class="brand-header">🛍️ 拱廊街尋寶 (瑞士品牌)</div>
+            <div class="brand-list">
+                <span class="brand-tag">Mammut (猛瑪象/戶外)</span>
+                <span class="brand-tag">Bally (皮件/瑞士國寶)</span>
+                <span class="brand-tag">Swatch / Omega</span>
+                <span class="brand-tag">Läderach (巧克力)</span>
+                <span class="brand-tag">Heimatwerk (手工藝)</span>
+            </div>
+        </div>
+
+        <div class="tips-box"><div class="tips-header">💡 伯恩豆知識</div><div class="tips-content"><ul><li><b>食童噴泉：</b>老城有座「食人魔吃小孩」噴泉，非常怪誕。</li><li><b>6公里長廊：</b>下雨下雪都不怕，是歐洲最長的購物長廊。</li></ul></div></div>
+        
         <div class="timeline">
             <div class="time-block"><div class="time-dot"></div><div class="time-label">08:30</div><div class="activity-name">火車前往伯恩</div></div>
             <div class="time-block"><div class="time-dot"></div><div class="time-label">上午</div><div class="activity-name">拱廊街購物</div>
                 <div class="activity-desc">
-                    歐洲最長拱廊 (Lauben)，下雪也能優雅逛街。必逛 Loeb 百貨與 Spitalgasse 街區。
+                    從火車站出來沿著 Spitalgasse 逛。必逛 Loeb 百貨 (櫥窗設計) 與各大瑞士品牌旗艦店。
                 </div>
             </div>
             <div class="time-block"><div class="time-dot"></div><div class="time-label">13:00</div><div class="activity-name">午餐</div><div class="activity-desc">Kornhauskeller (穀倉地窖餐廳) 或 Altes Tramdepot。</div></div>
             <div class="time-block"><div class="time-dot"></div><div class="time-label">下午</div><div class="activity-name">老城深度遊</div>
                 <div class="activity-desc">
-                    鐘塔 (Zytglogge) 看整點報時 -> 玫瑰園 (Rosengarten) 俯瞰老城。
+                    鐘塔 (Zytglogge) -> 玫瑰園 (Rosengarten) 俯瞰老城。
                 </div>
             </div>
         </div>
@@ -373,12 +409,12 @@
 
     <div id="day5" class="view">
         <div class="detail-hero"><div class="detail-date">1/17 (六) | DAY 5</div><h1 class="detail-title">前進<br>采爾馬特</h1></div>
-        <div class="tips-box"><div class="tips-header">💡 Zermatt 豆知識</div><div class="tips-content"><ul><li><b>電動車：</b>鎮上禁止燃油車，只有像玩具一樣的電動計程車。</li><li><b>三角巧克力：</b>Toblerone 的形狀就是馬特洪峰。</li></ul></div></div>
+        <div class="tips-box"><div class="tips-header">💡 Zermatt 必吃必看</div><div class="tips-content"><ul><li><b>Fuchs：</b>采爾馬特當地的烘焙/巧克力名店，必吃登山家造型巧克力 (Matterhörnli)。</li><li><b>防鼠板：</b>舊穀倉柱子與地基間的圓形石板。</li></ul></div></div>
         <div class="timeline">
             <div class="time-block"><div class="time-dot"></div><div class="time-label">08:00</div><div class="activity-name">大移動</div><div class="activity-desc">Grindelwald -> Interlaken -> Visp -> Zermatt。</div></div>
             <div class="time-block"><div class="time-dot"></div><div class="time-label">下午</div><div class="activity-name">Hinterdorfstrasse 老街</div>
                 <div class="activity-desc">
-                    <b>防鼠設計：</b>注意看舊穀倉柱子與地基之間，有一塊圓形的「防鼠石板」。
+                    參觀磨菇屋。去 Fuchs 買個點心吃。
                 </div>
             </div>
             <div class="time-block"><div class="time-dot"></div><div class="time-label">傍晚</div><div class="activity-name">日落金山</div><div class="activity-desc">前往 Kirchbrücke 橋，這是拍攝馬特洪峰日落變成金色的最佳位置。</div></div>
@@ -390,36 +426,28 @@
         <div class="detail-hero"><div class="detail-date">1/18 (日) | DAY 6</div><h1 class="detail-title">馬特洪峰<br>360度震撼</h1></div>
         
         <div class="backup-box">
-            <div class="backup-header">☔ 山上天氣不好？轉戰城市！</div>
+            <div class="backup-header">☔ 雨備：巧克力工廠與城堡</div>
             <div class="backup-content">
-                如果山上白牆一片，不如利用 STP 搭火車「出山」去鄰近城市，天氣通常會比山區好很多：
+                如果采爾馬特天氣不佳，利用 STP 搭火車出山：
                 
-                <span class="backup-title">方案 A：錫永 (Sion) - 古堡雙子城</span>
-                <span class="tag tag-backup">車程約 1hr 20m</span>
-                <br>
-                瓦萊州的首府。這裡以兩座聳立在山丘上的古堡 (Tourbillon & Valère) 聞名，非常有《冰與火之歌》的感覺。老城區很好逛，且是瑞士陽光最充足的城市。
-
-                <span class="backup-title">方案 B：蒙特勒 (Montreux) - 西庸城堡</span>
-                <span class="tag tag-backup">車程約 2hr 30m</span>
-                <br>
-                雖然遠一點，但能直接殺到日內瓦湖畔 (Lac Léman)。必去水上城堡 **Chillon Castle (西庸城堡)**，這也是持 STP 免費參觀的熱門景點。
+                <span class="backup-title">方案 A (巧克力)：Maison Cailler</span>
+                <span class="tag tag-choco">Broc / Montreux</span><br>
+                前往蒙特勒(Montreux)轉車去 Broc，參觀 Cailler 巧克力工廠。這非常有質感，有語音導覽還可以試吃。
+                
+                <span class="backup-title">方案 B：蒙特勒與西庸城堡</span>
+                直接去蒙特勒逛湖畔，參觀西庸城堡(Chillon Castle)。市區也有著名的巧克力店 Confiserie Zurcher。
             </div>
         </div>
 
         <div class="timeline">
             <div class="time-block"><div class="time-dot"></div><div class="time-label">08:00 (天氣好)</div><div class="activity-name">葛內拉特 (Gornergrat)</div>
                 <div class="activity-desc">
-                    搭乘登山齒軌火車上山。
-                    <ul class="detail-list">
-                        <li><b>看點：</b>這是欣賞馬特洪峰最完美的距離。</li>
-                        <li><b>Riffelsee：</b>如果在夏天是看倒影的神地，冬天則是白雪覆蓋的夢幻湖面。</li>
-                        <li><b>3100 Kulmhotel：</b>歐洲最高的飯店之一，去戶外露台曬太陽喝咖啡。</li>
-                    </ul>
+                    搭乘登山齒軌火車上山。欣賞馬特洪峰最完美的距離。
                 </div>
             </div>
             <div class="time-block"><div class="time-dot"></div><div class="time-label">下午</div><div class="activity-name">自由活動 / 冰川天堂</div>
                 <div class="activity-desc">
-                    如果體力好，可再去冰川天堂 (Matterhorn Glacier Paradise)，那裡可以摸到萬年冰河，且可眺望義大利。
+                    或回鎮上逛街。推薦去 <b>Läderach</b> 買新鮮敲碎的巧克力片。
                 </div>
             </div>
             <div class="time-block"><div class="time-dot"></div><div class="time-label">晚餐</div><div class="activity-name">起司鍋 (Fondue)</div><div class="activity-desc">推薦去 Whymper-Stube 或 Restaurant Schäferstube 吃道地的瓦萊州起司鍋。</div></div>
@@ -433,37 +461,46 @@
         <div class="timeline">
             <div class="time-block"><div class="time-dot"></div><div class="time-label">08:52 (需確認)</div><div class="activity-name">搭乘冰河列車 (PE 902)</div>
                 <div class="activity-desc">
-                    Zermatt -> Chur (庫爾)。
-                    <ul class="detail-list">
-                        <li><b>Oberalp Pass：</b>全線最高點 (2033m)，像是行駛在雪原中。</li>
-                        <li><b>萊茵河大峽谷 (Ruinaulta)：</b>被稱為瑞士大峽谷，白色岩壁非常壯觀。</li>
-                    </ul>
+                    Zermatt -> Chur (庫爾)。全景天窗欣賞雪景。
                 </div>
             </div>
             <div class="time-block"><div class="time-dot"></div><div class="time-label">下午</div><div class="activity-name">蘭德瓦瑟高架橋</div>
                 <div class="activity-desc">
                     <b>⚠️ 必拍重點！</b>
-                    經過 Filisur 站後不久，火車會行駛在 65 米高的高架橋上並轉彎進入隧道。請準備好相機捕捉火車過彎的經典畫面。
+                    經過 Filisur 站後不久，火車會行駛在 65 米高的高架橋上並轉彎進入隧道。
                 </div>
             </div>
-            <div class="time-block"><div class="time-dot"></div><div class="time-label">14:26</div><div class="activity-name">抵達庫爾 (Chur)</div><div class="activity-desc">瑞士最古老的城市。在此轉乘一般快車前往蘇黎世。</div></div>
+            <div class="time-block"><div class="time-dot"></div><div class="time-label">14:26</div><div class="activity-name">抵達庫爾 (Chur)</div><div class="activity-desc">在此轉乘一般快車前往蘇黎世。</div></div>
         </div>
         <div class="hotel-card"><div class="hotel-label">CONFIRMED</div><div class="hotel-name">Trip Inn Zurich Hotel</div></div>
     </div>
 
     <div id="day8" class="view">
-        <div class="detail-hero"><div class="detail-date">1/20 (二) | DAY 8</div><h1 class="detail-title">最後巡禮 &<br>平安返家</h1></div>
-        <div class="tips-box"><div class="tips-header">💡 蘇黎世必買</div><div class="tips-content"><ul><li><b>Sprüngli：</b>蘇黎世甜點老店，必買「Luxemburgerli」迷你馬卡龍。</li><li><b>Freitag：</b>蘇黎世發源的環保包，每一款都是獨一無二的卡車帆布做成的。</li></ul></div></div>
+        <div class="detail-hero"><div class="detail-date">1/20 (二) | DAY 8</div><h1 class="detail-title">蘇黎世 (Zurich)<br>甜蜜返家</h1></div>
+        
+        <div class="brand-box">
+            <div class="brand-header">🛍️ 蘇黎世名店 (最後衝刺)</div>
+            <div class="brand-list">
+                <span class="brand-tag">Lindt (巧克力)</span>
+                <span class="brand-tag">Sprüngli (馬卡龍)</span>
+                <span class="brand-tag">Freitag (環保包)</span>
+                <span class="brand-tag">Teuscher (香檳巧克力)</span>
+            </div>
+        </div>
+
         <div class="timeline">
-            <div class="time-block"><div class="time-dot"></div><div class="time-label">早上</div><div class="activity-name">市區觀光 / 萊茵瀑布</div>
+            <div class="time-block"><div class="time-dot"></div><div class="time-label">早上 (巧克力特企)</div><div class="activity-name">Lindt Home of Chocolate</div>
                 <div class="activity-desc">
+                    <b>⚠️ 爸媽最愛！</b>位於 Kilchberg (搭火車/船很快)。
                     <ul class="detail-list">
-                        <li><b>林登霍夫山 (Lindenhof)：</b>韓劇《愛的迫降》片頭取景地，俯瞰蘇黎世老城。</li>
-                        <li><b>萊茵瀑布：</b>如果時間夠，可搭火車去歐洲最大瀑布 (Rhine Falls)。</li>
+                        <li>擁有世界最大的「9公尺巧克力噴泉」。</li>
+                        <li>超大旗艦店，所有口味都有，適合最後大採買。</li>
                     </ul>
                 </div>
             </div>
-            <div class="time-block"><div class="time-dot"></div><div class="time-label">下午</div><div class="activity-name">班霍夫大街</div><div class="activity-desc">全球最昂貴的購物大道之一，做最後的採買。</div></div>
+            <div class="time-block"><div class="time-dot"></div><div class="time-label">下午</div><div class="activity-name">班霍夫大街</div><div class="activity-desc">
+                全球最昂貴的購物大道。別忘了去 <b>Sprüngli</b> 買一盒 Luxemburgerli 馬卡龍在飛機上吃。
+            </div></div>
             <div class="time-block"><div class="time-dot"></div><div class="time-label">19:30</div><div class="activity-name">抵達機場 (ZRH)</div><div class="activity-desc">辦理退稅、托運。</div></div>
             <div class="time-block"><div class="time-dot"></div><div class="time-label">22:40</div><div class="activity-name">飛機起飛</div><div class="activity-desc">LX138 飛往香港，轉機回台北。</div></div>
         </div>
