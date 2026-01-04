@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>瑞士10天深度之旅 (含品牌&巧克力特企) 🇨🇭</title>
+    <title>瑞士10天深度導航版 🇨🇭</title>
     <style>
         :root {
             --primary: #D80027; /* Swiss Red */
@@ -15,6 +15,8 @@
             --danger: #FF3B30;
             --rain: #546e7a;    /* Color for backup plans */
             --choco: #795548;   /* Chocolate Color */
+            --swatch: #e91e63;  /* Swatch Color */
+            --loc: #2e7d32;     /* Location Color */
         }
 
         body {
@@ -166,6 +168,12 @@
             border: 1px solid #e0e0e0; color: #555; font-weight: 600;
         }
 
+        /* Swatch Special Box */
+        .swatch-box {
+            background: #fce4ec; border: 1px solid #f8bbd0; border-radius: 12px; padding: 15px; margin-bottom: 20px;
+        }
+        .swatch-header { font-weight: 700; color: var(--swatch); margin-bottom: 8px; display: flex; align-items: center;}
+
         .timeline { position: relative; padding-left: 20px; }
         .timeline::before { content: ''; position: absolute; left: 6px; top: 5px; bottom: 0; width: 2px; background: #e0e0e0; }
         .time-block { position: relative; margin-bottom: 25px; }
@@ -181,6 +189,23 @@
         .tag-train { background: #e3f2fd; color: #1565c0; }
         .tag-backup { background: #fff; border: 1px solid var(--rain); color: var(--rain); }
         .tag-choco { background: #efebe9; color: var(--choco); border: 1px solid #d7ccc8; }
+        .tag-shop { background: #fff0f5; color: #e91e63; border: 1px solid #f8bbd0; }
+
+        /* Boarding Location Style */
+        .board-at {
+            display: inline-block;
+            margin-top: 6px;
+            padding: 4px 8px;
+            background-color: #f1f8e9;
+            color: var(--loc);
+            border: 1px solid #c5e1a5;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .board-at::before {
+            content: '📍 ';
+        }
 
         .hotel-card { background: var(--card); border-radius: 12px; padding: 15px; border-left: 5px solid #2e7d32; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .hotel-label { font-size: 0.75rem; color: #2e7d32; font-weight: 700; margin-bottom: 5px; }
@@ -212,7 +237,7 @@
         </div>
         <div class="day-list-item" onclick="openDay('day3')">
             <div class="day-number">D3</div>
-            <div class="day-info"><h3>少女峰 (含巧克力雨備)</h3><p>1/15 (四) | 歐洲屋脊 or 瀑布</p></div><div class="arrow">❯</div>
+            <div class="day-info"><h3>少女峰 (含Swatch攻略)</h3><p>1/15 (四) | 歐洲屋脊 or 瀑布</p></div><div class="arrow">❯</div>
         </div>
         <div class="day-list-item" onclick="openDay('day4')">
             <div class="day-number">D4</div>
@@ -293,18 +318,25 @@
         <div class="tips-box"><div class="tips-header">💡 琉森豆知識</div><div class="tips-content"><ul><li><b>Bachmann：</b>琉森起家的烘焙名店，店內有「流動巧克力牆」，必買水滴狀巧克力。</li><li><b>垂死獅子像：</b>紀念1792年為保護法國路易十六而戰死的瑞士傭兵。</li></ul></div></div>
         
         <div class="timeline">
-            <div class="time-block"><div class="time-dot"></div><div class="time-label">06:10</div><div class="activity-name">抵達蘇黎世機場</div><div class="activity-desc">過海關、領行李。直接走到機場對面的「Zürich Flughafen」火車站。</div></div>
-            <div class="time-block"><div class="time-dot"></div><div class="time-label">07:30</div><div class="activity-name">前往琉森</div><div class="activity-desc">搭乘直達車。<br><span class="tag tag-train">IR75 / IC</span></div></div>
+            <div class="time-block"><div class="time-dot"></div><div class="time-label">06:10</div><div class="activity-name">抵達蘇黎世機場</div><div class="activity-desc">過海關、領行李。直接走到機場對面的火車站。
+            <br><span class="board-at">搭車點：Zürich Flughafen (機場站)</span></div></div>
+            
+            <div class="time-block"><div class="time-dot"></div><div class="time-label">07:30</div><div class="activity-name">前往琉森</div><div class="activity-desc">搭乘直達車 (IR75 / IC)。
+            <br><span class="board-at">搭車點：Zürich Flughafen</span></div></div>
+            
             <div class="time-block"><div class="time-dot"></div><div class="time-label">09:00</div><div class="activity-name">寄放行李</div><div class="activity-desc">Hotel Pickwick and Pub (河岸邊)。</div></div>
+            
             <div class="time-block"><div class="time-dot"></div><div class="time-label">上午</div><div class="activity-name">瑞吉山 (Mt. Rigi)</div>
                 <div class="activity-desc">
-                    被稱為「山巒皇后」。持 STP 全程免費。
+                    被稱為「山巒皇后」。
+                    <br><span class="board-at">搭船點：Luzern Bahnhofquai (車站前碼頭)</span>
                     <ul class="detail-list">
-                        <li><b>體驗：</b>搭船遊湖至 Vitznau，轉紅色火車上山。</li>
-                        <li><b>視野：</b>山頂 Rigi Kulm 可360度俯瞰阿爾卑斯山脈。</li>
+                        <li>搭船遊湖至 Vitznau，轉紅色火車上山。</li>
+                        <li>下山可搭纜車至 Weggis，再搭船回琉森。</li>
                     </ul>
                 </div>
             </div>
+            
             <div class="time-block"><div class="time-dot"></div><div class="time-label">下午</div><div class="activity-name">琉森老城漫遊</div>
                 <div class="activity-desc">
                     垂死獅子像 -> 穆塞格城牆 -> 卡貝爾橋。
@@ -317,17 +349,24 @@
     <div id="day2" class="view">
         <div class="detail-hero"><div class="detail-date">1/14 (三) | DAY 2</div><h1 class="detail-title">黃金列車 &<br>格林德瓦</h1></div>
         <div class="tips-box"><div class="tips-header">💡 格林德瓦必看</div><div class="tips-content"><ul><li><b>艾格峰北壁：</b>登山界的「死亡之牆」，垂直落差1800米，就在鎮上正上方。</li><li><b>木屋群：</b>這裡的木屋依照斜坡地形建造，風景如畫。</li></ul></div></div>
+        
         <div class="timeline">
             <div class="time-block"><div class="time-dot"></div><div class="time-label">08:06</div><div class="activity-name">黃金列車路線</div>
                 <div class="activity-desc">
                     Luzern -> Interlaken Ost。
+                    <br><span class="board-at">搭車點：Luzern (中央車站)</span>
                     <ul class="detail-list">
                         <li><b>座位建議：</b>請坐「行進方向右側」，布里恩茲湖的藍綠色湖水全程相伴。</li>
                     </ul>
                 </div>
             </div>
-            <div class="time-block"><div class="time-dot"></div><div class="time-label">10:00</div><div class="activity-name">轉乘登山火車</div><div class="activity-desc">Interlaken Ost -> Grindelwald。</div></div>
+            
+            <div class="time-block"><div class="time-dot"></div><div class="time-label">10:00</div><div class="activity-name">轉乘登山火車</div>
+            <div class="activity-desc">Interlaken Ost -> Grindelwald。
+            <br><span class="board-at">搭車點：Interlaken Ost (東站)</span></div></div>
+            
             <div class="time-block"><div class="time-dot"></div><div class="time-label">11:00</div><div class="activity-name">Check-in</div><div class="activity-desc">Hotel Tschuggen。</div></div>
+            
             <div class="time-block"><div class="time-dot"></div><div class="time-label">下午</div><div class="activity-name">雙湖或小鎮漫遊</div>
                 <div class="activity-desc">
                     可搭公車去圖恩湖 (Lake Thun)，或在格林德瓦小鎮沿著 Dorfstrasse 逛逛。
@@ -340,6 +379,18 @@
     <div id="day3" class="view">
         <div class="detail-hero"><div class="detail-date">1/15 (四) | DAY 3</div><h1 class="detail-title">歐洲屋脊<br>少女峰</h1></div>
         
+        <div class="swatch-box">
+            <div class="swatch-header">🛍️ 少女峰 Swatch 挑選攻略</div>
+            <div class="backup-content">
+                <b>目標：給長輩的「Top of Europe」紀念錶</b>
+                <ul class="detail-list" style="margin-top:5px; color:#c2185b;">
+                    <li><b>必找款式：</b>"Destination Watch" 或 "Jungfraujoch Edition"。</li>
+                    <li><b>限定特徵：</b>錶帶印有 3454m 高度、雪絨花、乳牛或國旗圖案 (市區買不到)。</li>
+                    <li><b>挑選重點：</b>長輩戴建議選「Big Bold」系列(字大清晰) 或 「New Gent」(輕便不咬手)。</li>
+                </ul>
+            </div>
+        </div>
+
         <div class="backup-box">
             <div class="backup-header">☔ 天氣不好去哪裡？(含巧克力)</div>
             <div class="backup-content">
@@ -354,20 +405,32 @@
         </div>
 
         <div class="timeline">
-            <div class="time-block"><div class="time-dot"></div><div class="time-label">08:00 (天氣好)</div><div class="activity-name">Eiger Express</div>
+            <div class="time-block"><div class="time-dot"></div><div class="time-label">08:00 (天氣好)</div><div class="activity-name">Eiger Express (艾格快線)</div>
                 <div class="activity-desc">
-                    從 Grindelwald Terminal 搭乘最新的三索纜車。只需 15 分鐘直達 Eigergletscher 站。
+                    搭乘最新的三索纜車，15 分鐘直達冰川站。
+                    <br><span class="board-at">搭車點：Grindelwald Terminal (注意! 是總站不是火車站)</span>
                 </div>
             </div>
+            
             <div class="time-block"><div class="time-dot"></div><div class="time-label">上午</div><div class="activity-name">少女峰頂 (Jungfraujoch)</div>
                 <div class="activity-desc">
                     冰宮、斯芬克斯觀景台 (阿萊奇冰河)。<br>
-                    <b>Lindt Shop：</b>山上有世界海拔最高的巧克力店，可買紀念款。
+                    <b>Swatch Store：</b>位於紀念品區，全世界最高的 Swatch 商店。
+                    <br><span class="board-at">回程搭車點：Jungfraujoch 火車站</span>
                 </div>
             </div>
+            
             <div class="time-block"><div class="time-dot"></div><div class="time-label">下午</div><div class="activity-name">Wengen 環狀下山</div>
                 <div class="activity-desc">
                     經由 Wengen (威根小鎮) 和 Lauterbrunnen (瀑布鎮) 下山，不走回頭路。
+                    <br><span class="board-at">轉車點：Kleine Scheidegg</span>
+                </div>
+            </div>
+            
+             <div class="time-block"><div class="time-dot"></div><div class="time-label">傍晚</div><div class="activity-name">返回格林德瓦</div>
+                <div class="activity-desc">
+                    從瀑布鎮搭車回去。
+                    <br><span class="board-at">搭車點：Lauterbrunnen (經 Zweilütschinen 轉車)</span>
                 </div>
             </div>
         </div>
@@ -391,7 +454,12 @@
         <div class="tips-box"><div class="tips-header">💡 伯恩豆知識</div><div class="tips-content"><ul><li><b>食童噴泉：</b>老城有座「食人魔吃小孩」噴泉，非常怪誕。</li><li><b>6公里長廊：</b>下雨下雪都不怕，是歐洲最長的購物長廊。</li></ul></div></div>
         
         <div class="timeline">
-            <div class="time-block"><div class="time-dot"></div><div class="time-label">08:30</div><div class="activity-name">火車前往伯恩</div></div>
+            <div class="time-block"><div class="time-dot"></div><div class="time-label">08:30</div><div class="activity-name">火車前往伯恩</div>
+            <div class="activity-desc">
+            <br><span class="board-at">搭車點：Grindelwald (村莊火車站)</span>
+            </div>
+            </div>
+            
             <div class="time-block"><div class="time-dot"></div><div class="time-label">上午</div><div class="activity-name">拱廊街購物</div>
                 <div class="activity-desc">
                     從火車站出來沿著 Spitalgasse 逛。必逛 Loeb 百貨 (櫥窗設計) 與各大瑞士品牌旗艦店。
@@ -410,8 +478,13 @@
     <div id="day5" class="view">
         <div class="detail-hero"><div class="detail-date">1/17 (六) | DAY 5</div><h1 class="detail-title">前進<br>采爾馬特</h1></div>
         <div class="tips-box"><div class="tips-header">💡 Zermatt 必吃必看</div><div class="tips-content"><ul><li><b>Fuchs：</b>采爾馬特當地的烘焙/巧克力名店，必吃登山家造型巧克力 (Matterhörnli)。</li><li><b>防鼠板：</b>舊穀倉柱子與地基間的圓形石板。</li></ul></div></div>
+        
         <div class="timeline">
-            <div class="time-block"><div class="time-dot"></div><div class="time-label">08:00</div><div class="activity-name">大移動</div><div class="activity-desc">Grindelwald -> Interlaken -> Visp -> Zermatt。</div></div>
+            <div class="time-block"><div class="time-dot"></div><div class="time-label">08:00</div><div class="activity-name">大移動</div>
+            <div class="activity-desc">Grindelwald -> Interlaken -> Visp -> Zermatt。
+            <br><span class="board-at">搭車點：Grindelwald</span>
+            </div></div>
+            
             <div class="time-block"><div class="time-dot"></div><div class="time-label">下午</div><div class="activity-name">Hinterdorfstrasse 老街</div>
                 <div class="activity-desc">
                     參觀磨菇屋。去 Fuchs 買個點心吃。
@@ -435,7 +508,7 @@
                 前往蒙特勒(Montreux)轉車去 Broc，參觀 Cailler 巧克力工廠。這非常有質感，有語音導覽還可以試吃。
                 
                 <span class="backup-title">方案 B：蒙特勒與西庸城堡</span>
-                直接去蒙特勒逛湖畔，參觀西庸城堡(Chillon Castle)。市區也有著名的巧克力店 Confiserie Zurcher。
+                直接去蒙特勒逛湖畔，參觀西庸城堡(Chillon Castle)。
             </div>
         </div>
 
@@ -443,6 +516,7 @@
             <div class="time-block"><div class="time-dot"></div><div class="time-label">08:00 (天氣好)</div><div class="activity-name">葛內拉特 (Gornergrat)</div>
                 <div class="activity-desc">
                     搭乘登山齒軌火車上山。欣賞馬特洪峰最完美的距離。
+                    <br><span class="board-at">搭車點：Gornergrat Bahn (在國鐵站對面，不要走錯)</span>
                 </div>
             </div>
             <div class="time-block"><div class="time-dot"></div><div class="time-label">下午</div><div class="activity-name">自由活動 / 冰川天堂</div>
@@ -458,10 +532,12 @@
     <div id="day7" class="view">
         <div class="detail-hero"><div class="detail-date">1/19 (一) | DAY 7</div><h1 class="detail-title">冰河列車<br>絕美鐵道行</h1></div>
         <div class="tips-box"><div class="tips-header">💡 冰河列車豆知識</div><div class="tips-content"><ul><li><b>世界上最慢的快車：</b>平均時速只有 40 公里，為的是讓乘客慢慢看風景。</li><li><b>傾斜酒杯：</b>車上有賣底部是斜的紀念酒杯，防止爬坡時酒灑出來。</li></ul></div></div>
+        
         <div class="timeline">
             <div class="time-block"><div class="time-dot"></div><div class="time-label">08:52 (需確認)</div><div class="activity-name">搭乘冰河列車 (PE 902)</div>
                 <div class="activity-desc">
                     Zermatt -> Chur (庫爾)。全景天窗欣賞雪景。
+                    <br><span class="board-at">搭車點：Zermatt (國鐵站)</span>
                 </div>
             </div>
             <div class="time-block"><div class="time-dot"></div><div class="time-label">下午</div><div class="activity-name">蘭德瓦瑟高架橋</div>
@@ -470,7 +546,9 @@
                     經過 Filisur 站後不久，火車會行駛在 65 米高的高架橋上並轉彎進入隧道。
                 </div>
             </div>
-            <div class="time-block"><div class="time-dot"></div><div class="time-label">14:26</div><div class="activity-name">抵達庫爾 (Chur)</div><div class="activity-desc">在此轉乘一般快車前往蘇黎世。</div></div>
+            <div class="time-block"><div class="time-dot"></div><div class="time-label">14:26</div><div class="activity-name">抵達庫爾 (Chur)</div><div class="activity-desc">在此轉乘一般快車前往蘇黎世。
+            <br><span class="board-at">搭車點：Chur (同月台轉車或看看板)</span>
+            </div></div>
         </div>
         <div class="hotel-card"><div class="hotel-label">CONFIRMED</div><div class="hotel-name">Trip Inn Zurich Hotel</div></div>
     </div>
@@ -491,7 +569,8 @@
         <div class="timeline">
             <div class="time-block"><div class="time-dot"></div><div class="time-label">早上 (巧克力特企)</div><div class="activity-name">Lindt Home of Chocolate</div>
                 <div class="activity-desc">
-                    <b>⚠️ 爸媽最愛！</b>位於 Kilchberg (搭火車/船很快)。
+                    <b>⚠️ 爸媽最愛！</b>位於 Kilchberg。
+                    <br><span class="board-at">搭車點：Zürich HB (搭 S-Bahn S8 或 S24 到 Kilchberg 站)</span>
                     <ul class="detail-list">
                         <li>擁有世界最大的「9公尺巧克力噴泉」。</li>
                         <li>超大旗艦店，所有口味都有，適合最後大採買。</li>
@@ -501,7 +580,10 @@
             <div class="time-block"><div class="time-dot"></div><div class="time-label">下午</div><div class="activity-name">班霍夫大街</div><div class="activity-desc">
                 全球最昂貴的購物大道。別忘了去 <b>Sprüngli</b> 買一盒 Luxemburgerli 馬卡龍在飛機上吃。
             </div></div>
-            <div class="time-block"><div class="time-dot"></div><div class="time-label">19:30</div><div class="activity-name">抵達機場 (ZRH)</div><div class="activity-desc">辦理退稅、托運。</div></div>
+            <div class="time-block"><div class="time-dot"></div><div class="time-label">19:30</div><div class="activity-name">抵達機場 (ZRH)</div>
+            <div class="activity-desc">辦理退稅、托運。
+            <br><span class="board-at">搭車點：Zürich HB (直達機場)</span></div></div>
+            
             <div class="time-block"><div class="time-dot"></div><div class="time-label">22:40</div><div class="activity-name">飛機起飛</div><div class="activity-desc">LX138 飛往香港，轉機回台北。</div></div>
         </div>
         <div class="hotel-card"><div class="hotel-label">HOME</div><div class="hotel-name">甜蜜的家 🇹🇼</div></div>
