@@ -191,7 +191,20 @@
         .tag-choco { background: #efebe9; color: var(--choco); border: 1px solid #d7ccc8; }
         .tag-shop { background: #fff0f5; color: #e91e63; border: 1px solid #f8bbd0; }
 
-        /* Boarding Location Style */
+        /* Map Button Style */
+        .map-btn {
+            display: inline-block;
+            margin-left: 8px;
+            padding: 2px 8px;
+            background-color: #e3f2fd;
+            color: #007AFF;
+            border: 1px solid #90caf9;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
         .board-at {
             display: inline-block;
             margin-top: 6px;
@@ -202,14 +215,19 @@
             border-radius: 6px;
             font-size: 0.85rem;
             font-weight: 600;
+            width: fit-content;
         }
-        .board-at::before {
-            content: '📍 ';
-        }
+        .board-at::before { content: '📍 '; }
 
         .hotel-card { background: var(--card); border-radius: 12px; padding: 15px; border-left: 5px solid #2e7d32; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .hotel-label { font-size: 0.75rem; color: #2e7d32; font-weight: 700; margin-bottom: 5px; }
         .hotel-name { font-weight: 600; font-size: 1rem; }
+        
+        .hotel-map-link {
+            float: right;
+            text-decoration: none;
+            font-size: 1.2rem;
+        }
     </style>
 </head>
 <body>
@@ -319,17 +337,17 @@
         
         <div class="timeline">
             <div class="time-block"><div class="time-dot"></div><div class="time-label">06:10</div><div class="activity-name">抵達蘇黎世機場</div><div class="activity-desc">過海關、領行李。直接走到機場對面的火車站。
-            <br><span class="board-at">搭車點：Zürich Flughafen (機場站)</span></div></div>
+            <br><span class="board-at">搭車點：Zürich Flughafen (機場站)</span> <a href="https://www.google.com/maps/search/?api=1&query=Zürich+Flughafen+Railway+Station" target="_blank" class="map-btn">🗺️ 導航</a></div></div>
             
             <div class="time-block"><div class="time-dot"></div><div class="time-label">07:30</div><div class="activity-name">前往琉森</div><div class="activity-desc">搭乘直達車 (IR75 / IC)。
-            <br><span class="board-at">搭車點：Zürich Flughafen</span></div></div>
+            <br><span class="board-at">搭車點：Zürich Flughafen</span> <a href="https://www.google.com/maps/search/?api=1&query=Zürich+Flughafen+Railway+Station" target="_blank" class="map-btn">🗺️ 導航</a></div></div>
             
             <div class="time-block"><div class="time-dot"></div><div class="time-label">09:00</div><div class="activity-name">寄放行李</div><div class="activity-desc">Hotel Pickwick and Pub (河岸邊)。</div></div>
             
             <div class="time-block"><div class="time-dot"></div><div class="time-label">上午</div><div class="activity-name">瑞吉山 (Mt. Rigi)</div>
                 <div class="activity-desc">
                     被稱為「山巒皇后」。
-                    <br><span class="board-at">搭船點：Luzern Bahnhofquai (車站前碼頭)</span>
+                    <br><span class="board-at">搭船點：Luzern Bahnhofquai (碼頭)</span> <a href="https://www.google.com/maps/search/?api=1&query=Luzern+Bahnhofquai" target="_blank" class="map-btn">🗺️ 導航</a>
                     <ul class="detail-list">
                         <li>搭船遊湖至 Vitznau，轉紅色火車上山。</li>
                         <li>下山可搭纜車至 Weggis，再搭船回琉森。</li>
@@ -343,7 +361,11 @@
                 </div>
             </div>
         </div>
-        <div class="hotel-card"><div class="hotel-label">CONFIRMED</div><div class="hotel-name">Hotel Pickwick and Pub</div></div>
+        <div class="hotel-card">
+            <a href="https://www.google.com/maps/search/?api=1&query=Hotel+Pickwick+and+Pub+Lucerne" target="_blank" class="hotel-map-link">🗺️</a>
+            <div class="hotel-label">CONFIRMED</div>
+            <div class="hotel-name">Hotel Pickwick and Pub</div>
+        </div>
     </div>
 
     <div id="day2" class="view">
@@ -354,7 +376,7 @@
             <div class="time-block"><div class="time-dot"></div><div class="time-label">08:06</div><div class="activity-name">黃金列車路線</div>
                 <div class="activity-desc">
                     Luzern -> Interlaken Ost。
-                    <br><span class="board-at">搭車點：Luzern (中央車站)</span>
+                    <br><span class="board-at">搭車點：Luzern (中央車站)</span> <a href="https://www.google.com/maps/search/?api=1&query=Lucerne+Railway+Station" target="_blank" class="map-btn">🗺️ 導航</a>
                     <ul class="detail-list">
                         <li><b>座位建議：</b>請坐「行進方向右側」，布里恩茲湖的藍綠色湖水全程相伴。</li>
                     </ul>
@@ -363,7 +385,7 @@
             
             <div class="time-block"><div class="time-dot"></div><div class="time-label">10:00</div><div class="activity-name">轉乘登山火車</div>
             <div class="activity-desc">Interlaken Ost -> Grindelwald。
-            <br><span class="board-at">搭車點：Interlaken Ost (東站)</span></div></div>
+            <br><span class="board-at">搭車點：Interlaken Ost (東站)</span> <a href="https://www.google.com/maps/search/?api=1&query=Interlaken+Ost+Railway+Station" target="_blank" class="map-btn">🗺️ 導航</a></div></div>
             
             <div class="time-block"><div class="time-dot"></div><div class="time-label">11:00</div><div class="activity-name">Check-in</div><div class="activity-desc">Hotel Tschuggen。</div></div>
             
@@ -373,7 +395,11 @@
                 </div>
             </div>
         </div>
-        <div class="hotel-card"><div class="hotel-label">CONFIRMED</div><div class="hotel-name">Hotel Tschuggen</div></div>
+        <div class="hotel-card">
+            <a href="https://www.google.com/maps/search/?api=1&query=Hotel+Tschuggen+Grindelwald" target="_blank" class="hotel-map-link">🗺️</a>
+            <div class="hotel-label">CONFIRMED</div>
+            <div class="hotel-name">Hotel Tschuggen</div>
+        </div>
     </div>
 
     <div id="day3" class="view">
@@ -398,6 +424,7 @@
                 <span class="backup-title">方案 A (巧克力)：Funky Chocolate Club</span>
                 <span class="tag tag-choco">Interlaken</span><br>
                 下山去 Interlaken 的巧克力俱樂部，參加 DIY 課程或盡情試吃，適合全家同樂。
+                <a href="https://www.google.com/maps/search/?api=1&query=Funky+Chocolate+Club+Interlaken" target="_blank" class="map-btn">🗺️ 導航</a>
                 
                 <span class="backup-title">方案 B：特呂默爾河瀑布 (Trümmelbach)</span>
                 位於 Lauterbrunnen，在室內看冰河瀑布，不怕淋濕。
@@ -408,7 +435,8 @@
             <div class="time-block"><div class="time-dot"></div><div class="time-label">08:00 (天氣好)</div><div class="activity-name">Eiger Express (艾格快線)</div>
                 <div class="activity-desc">
                     搭乘最新的三索纜車，15 分鐘直達冰川站。
-                    <br><span class="board-at">搭車點：Grindelwald Terminal (注意! 是總站不是火車站)</span>
+                    <br><span class="board-at">搭車點：Grindelwald Terminal</span> <a href="https://www.google.com/maps/search/?api=1&query=Grindelwald+Terminal" target="_blank" class="map-btn">🗺️ 導航</a>
+                    <br>(注意! 是纜車總站不是村莊火車站)
                 </div>
             </div>
             
@@ -423,18 +451,21 @@
             <div class="time-block"><div class="time-dot"></div><div class="time-label">下午</div><div class="activity-name">Wengen 環狀下山</div>
                 <div class="activity-desc">
                     經由 Wengen (威根小鎮) 和 Lauterbrunnen (瀑布鎮) 下山，不走回頭路。
-                    <br><span class="board-at">轉車點：Kleine Scheidegg</span>
                 </div>
             </div>
             
              <div class="time-block"><div class="time-dot"></div><div class="time-label">傍晚</div><div class="activity-name">返回格林德瓦</div>
                 <div class="activity-desc">
                     從瀑布鎮搭車回去。
-                    <br><span class="board-at">搭車點：Lauterbrunnen (經 Zweilütschinen 轉車)</span>
+                    <br><span class="board-at">搭車點：Lauterbrunnen</span> <a href="https://www.google.com/maps/search/?api=1&query=Lauterbrunnen+Railway+Station" target="_blank" class="map-btn">🗺️ 導航</a>
                 </div>
             </div>
         </div>
-        <div class="hotel-card"><div class="hotel-label">CONFIRMED</div><div class="hotel-name">Hotel Tschuggen</div></div>
+        <div class="hotel-card">
+            <a href="https://www.google.com/maps/search/?api=1&query=Hotel+Tschuggen+Grindelwald" target="_blank" class="hotel-map-link">🗺️</a>
+            <div class="hotel-label">CONFIRMED</div>
+            <div class="hotel-name">Hotel Tschuggen</div>
+        </div>
     </div>
 
     <div id="day4" class="view">
@@ -456,7 +487,7 @@
         <div class="timeline">
             <div class="time-block"><div class="time-dot"></div><div class="time-label">08:30</div><div class="activity-name">火車前往伯恩</div>
             <div class="activity-desc">
-            <br><span class="board-at">搭車點：Grindelwald (村莊火車站)</span>
+            <br><span class="board-at">搭車點：Grindelwald (村莊火車站)</span> <a href="https://www.google.com/maps/search/?api=1&query=Grindelwald+Railway+Station" target="_blank" class="map-btn">🗺️ 導航</a>
             </div>
             </div>
             
@@ -469,10 +500,15 @@
             <div class="time-block"><div class="time-dot"></div><div class="time-label">下午</div><div class="activity-name">老城深度遊</div>
                 <div class="activity-desc">
                     鐘塔 (Zytglogge) -> 玫瑰園 (Rosengarten) 俯瞰老城。
+                    <a href="https://www.google.com/maps/search/?api=1&query=Rosengarten+Bern" target="_blank" class="map-btn">🗺️ 導航</a>
                 </div>
             </div>
         </div>
-        <div class="hotel-card"><div class="hotel-label">CONFIRMED</div><div class="hotel-name">Hotel Tschuggen</div></div>
+        <div class="hotel-card">
+            <a href="https://www.google.com/maps/search/?api=1&query=Hotel+Tschuggen+Grindelwald" target="_blank" class="hotel-map-link">🗺️</a>
+            <div class="hotel-label">CONFIRMED</div>
+            <div class="hotel-name">Hotel Tschuggen</div>
+        </div>
     </div>
 
     <div id="day5" class="view">
@@ -482,17 +518,23 @@
         <div class="timeline">
             <div class="time-block"><div class="time-dot"></div><div class="time-label">08:00</div><div class="activity-name">大移動</div>
             <div class="activity-desc">Grindelwald -> Interlaken -> Visp -> Zermatt。
-            <br><span class="board-at">搭車點：Grindelwald</span>
+            <br><span class="board-at">搭車點：Grindelwald</span> <a href="https://www.google.com/maps/search/?api=1&query=Grindelwald+Railway+Station" target="_blank" class="map-btn">🗺️ 導航</a>
             </div></div>
             
             <div class="time-block"><div class="time-dot"></div><div class="time-label">下午</div><div class="activity-name">Hinterdorfstrasse 老街</div>
                 <div class="activity-desc">
                     參觀磨菇屋。去 Fuchs 買個點心吃。
+                    <a href="https://www.google.com/maps/search/?api=1&query=Hinterdorfstrasse+Zermatt" target="_blank" class="map-btn">🗺️ 導航</a>
                 </div>
             </div>
-            <div class="time-block"><div class="time-dot"></div><div class="time-label">傍晚</div><div class="activity-name">日落金山</div><div class="activity-desc">前往 Kirchbrücke 橋，這是拍攝馬特洪峰日落變成金色的最佳位置。</div></div>
+            <div class="time-block"><div class="time-dot"></div><div class="time-label">傍晚</div><div class="activity-name">日落金山</div><div class="activity-desc">前往 Kirchbrücke 橋，這是拍攝馬特洪峰日落變成金色的最佳位置。
+            <a href="https://www.google.com/maps/search/?api=1&query=Kirchbrücke+Zermatt" target="_blank" class="map-btn">🗺️ 導航</a></div></div>
         </div>
-        <div class="hotel-card"><div class="hotel-label">CONFIRMED</div><div class="hotel-name">Apartment in Zermatt</div></div>
+        <div class="hotel-card">
+            <a href="https://www.google.com/maps/search/?api=1&query=Apartment+with+beautiful+views+Zermatt" target="_blank" class="hotel-map-link">🗺️</a>
+            <div class="hotel-label">CONFIRMED</div>
+            <div class="hotel-name">Apartment in Zermatt</div>
+        </div>
     </div>
 
     <div id="day6" class="view">
@@ -505,7 +547,8 @@
                 
                 <span class="backup-title">方案 A (巧克力)：Maison Cailler</span>
                 <span class="tag tag-choco">Broc / Montreux</span><br>
-                前往蒙特勒(Montreux)轉車去 Broc，參觀 Cailler 巧克力工廠。這非常有質感，有語音導覽還可以試吃。
+                前往蒙特勒(Montreux)轉車去 Broc，參觀 Cailler 巧克力工廠。
+                <a href="https://www.google.com/maps/search/?api=1&query=Maison+Cailler" target="_blank" class="map-btn">🗺️ 導航</a>
                 
                 <span class="backup-title">方案 B：蒙特勒與西庸城堡</span>
                 直接去蒙特勒逛湖畔，參觀西庸城堡(Chillon Castle)。
@@ -516,7 +559,8 @@
             <div class="time-block"><div class="time-dot"></div><div class="time-label">08:00 (天氣好)</div><div class="activity-name">葛內拉特 (Gornergrat)</div>
                 <div class="activity-desc">
                     搭乘登山齒軌火車上山。欣賞馬特洪峰最完美的距離。
-                    <br><span class="board-at">搭車點：Gornergrat Bahn (在國鐵站對面，不要走錯)</span>
+                    <br><span class="board-at">搭車點：Gornergrat Bahn</span> <a href="https://www.google.com/maps/search/?api=1&query=Gornergrat+Bahn+Zermatt" target="_blank" class="map-btn">🗺️ 導航</a>
+                    <br>(在國鐵站對面，不要走錯)
                 </div>
             </div>
             <div class="time-block"><div class="time-dot"></div><div class="time-label">下午</div><div class="activity-name">自由活動 / 冰川天堂</div>
@@ -526,7 +570,11 @@
             </div>
             <div class="time-block"><div class="time-dot"></div><div class="time-label">晚餐</div><div class="activity-name">起司鍋 (Fondue)</div><div class="activity-desc">推薦去 Whymper-Stube 或 Restaurant Schäferstube 吃道地的瓦萊州起司鍋。</div></div>
         </div>
-        <div class="hotel-card"><div class="hotel-label">CONFIRMED</div><div class="hotel-name">Apartment in Zermatt</div></div>
+        <div class="hotel-card">
+            <a href="https://www.google.com/maps/search/?api=1&query=Apartment+with+beautiful+views+Zermatt" target="_blank" class="hotel-map-link">🗺️</a>
+            <div class="hotel-label">CONFIRMED</div>
+            <div class="hotel-name">Apartment in Zermatt</div>
+        </div>
     </div>
 
     <div id="day7" class="view">
@@ -537,7 +585,7 @@
             <div class="time-block"><div class="time-dot"></div><div class="time-label">08:52 (需確認)</div><div class="activity-name">搭乘冰河列車 (PE 902)</div>
                 <div class="activity-desc">
                     Zermatt -> Chur (庫爾)。全景天窗欣賞雪景。
-                    <br><span class="board-at">搭車點：Zermatt (國鐵站)</span>
+                    <br><span class="board-at">搭車點：Zermatt (國鐵站)</span> <a href="https://www.google.com/maps/search/?api=1&query=Zermatt+Railway+Station" target="_blank" class="map-btn">🗺️ 導航</a>
                 </div>
             </div>
             <div class="time-block"><div class="time-dot"></div><div class="time-label">下午</div><div class="activity-name">蘭德瓦瑟高架橋</div>
@@ -550,7 +598,11 @@
             <br><span class="board-at">搭車點：Chur (同月台轉車或看看板)</span>
             </div></div>
         </div>
-        <div class="hotel-card"><div class="hotel-label">CONFIRMED</div><div class="hotel-name">Trip Inn Zurich Hotel</div></div>
+        <div class="hotel-card">
+            <a href="https://www.google.com/maps/search/?api=1&query=Trip+Inn+Zurich+Hotel" target="_blank" class="hotel-map-link">🗺️</a>
+            <div class="hotel-label">CONFIRMED</div>
+            <div class="hotel-name">Trip Inn Zurich Hotel</div>
+        </div>
     </div>
 
     <div id="day8" class="view">
@@ -570,7 +622,8 @@
             <div class="time-block"><div class="time-dot"></div><div class="time-label">早上 (巧克力特企)</div><div class="activity-name">Lindt Home of Chocolate</div>
                 <div class="activity-desc">
                     <b>⚠️ 爸媽最愛！</b>位於 Kilchberg。
-                    <br><span class="board-at">搭車點：Zürich HB (搭 S-Bahn S8 或 S24 到 Kilchberg 站)</span>
+                    <br><span class="board-at">搭車點：Zürich HB (搭 S-Bahn 到 Kilchberg 站)</span> <a href="https://www.google.com/maps/search/?api=1&query=Zurich+HB" target="_blank" class="map-btn">🗺️ 導航</a>
+                    <br>目標地：<a href="https://www.google.com/maps/search/?api=1&query=Lindt+Home+of+Chocolate" target="_blank" class="map-btn">🍫 巧克力工廠</a>
                     <ul class="detail-list">
                         <li>擁有世界最大的「9公尺巧克力噴泉」。</li>
                         <li>超大旗艦店，所有口味都有，適合最後大採買。</li>
@@ -582,11 +635,14 @@
             </div></div>
             <div class="time-block"><div class="time-dot"></div><div class="time-label">19:30</div><div class="activity-name">抵達機場 (ZRH)</div>
             <div class="activity-desc">辦理退稅、托運。
-            <br><span class="board-at">搭車點：Zürich HB (直達機場)</span></div></div>
+            <br><span class="board-at">搭車點：Zürich HB (直達機場)</span> <a href="https://www.google.com/maps/search/?api=1&query=Zürich+Flughafen+Railway+Station" target="_blank" class="map-btn">🗺️ 導航</a></div></div>
             
             <div class="time-block"><div class="time-dot"></div><div class="time-label">22:40</div><div class="activity-name">飛機起飛</div><div class="activity-desc">LX138 飛往香港，轉機回台北。</div></div>
         </div>
-        <div class="hotel-card"><div class="hotel-label">HOME</div><div class="hotel-name">甜蜜的家 🇹🇼</div></div>
+        <div class="hotel-card">
+            <div class="hotel-label">HOME</div>
+            <div class="hotel-name">甜蜜的家 🇹🇼</div>
+        </div>
     </div>
 
     <nav class="bottom-nav">
