@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>瑞士10天深度導航版 🇨🇭</title>
+    <title>瑞士10天深度導航版 (含搭車點) 🇨🇭</title>
     <style>
         :root {
             --primary: #D80027; /* Swiss Red */
@@ -17,6 +17,7 @@
             --choco: #795548;   /* Chocolate Color */
             --swatch: #e91e63;  /* Swatch Color */
             --loc: #2e7d32;     /* Location Color */
+            --shop: #9c27b0;    /* Shopping Color */
         }
 
         body {
@@ -189,9 +190,9 @@
         .tag-train { background: #e3f2fd; color: #1565c0; }
         .tag-backup { background: #fff; border: 1px solid var(--rain); color: var(--rain); }
         .tag-choco { background: #efebe9; color: var(--choco); border: 1px solid #d7ccc8; }
-        .tag-shop { background: #fff0f5; color: #e91e63; border: 1px solid #f8bbd0; }
+        .tag-shop { background: #f3e5f5; color: var(--shop); border: 1px solid #e1bee7; }
 
-        /* Map Button Style */
+        /* Map Button & Location Style */
         .map-btn {
             display: inline-block;
             margin-left: 8px;
@@ -255,7 +256,7 @@
         </div>
         <div class="day-list-item" onclick="openDay('day3')">
             <div class="day-number">D3</div>
-            <div class="day-info"><h3>少女峰 (含Swatch攻略)</h3><p>1/15 (四) | 歐洲屋脊 or 瀑布</p></div><div class="arrow">❯</div>
+            <div class="day-info"><h3>少女峰 (含購物+巧克力)</h3><p>1/15 (四) | 歐洲屋脊 or 逛街</p></div><div class="arrow">❯</div>
         </div>
         <div class="day-list-item" onclick="openDay('day4')">
             <div class="day-number">D4</div>
@@ -267,7 +268,7 @@
         </div>
         <div class="day-list-item" onclick="openDay('day6')">
             <div class="day-number">D6</div>
-            <div class="day-info"><h3>馬特洪峰 (含工廠雨備)</h3><p>1/18 (日) | 360度雪景 or 巧克力</p></div><div class="arrow">❯</div>
+            <div class="day-info"><h3>馬特洪峰 (含購物+巧克力)</h3><p>1/18 (日) | 360度雪景 or 商場</p></div><div class="arrow">❯</div>
         </div>
         <div class="day-list-item" onclick="openDay('day7')">
             <div class="day-number">D7</div>
@@ -418,16 +419,23 @@
         </div>
 
         <div class="backup-box">
-            <div class="backup-header">☔ 天氣不好去哪裡？(含巧克力)</div>
+            <div class="backup-header">☔ 天氣不好去哪裡？(全功能版)</div>
             <div class="backup-content">
                 如果山上下大雪或白牆，建議放棄上山：
-                <span class="backup-title">方案 A (巧克力)：Funky Chocolate Club</span>
-                <span class="tag tag-choco">Interlaken</span><br>
-                下山去 Interlaken 的巧克力俱樂部，參加 DIY 課程或盡情試吃，適合全家同樂。
-                <a href="https://www.google.com/maps/search/?api=1&query=Funky+Chocolate+Club+Interlaken" target="_blank" class="map-btn">🗺️ 導航</a>
+                <span class="backup-title">方案 A (市區購物)：Interlaken Höheweg</span>
+                <span class="tag tag-shop">Interlaken</span><br>
+                下山去 Interlaken 的主街逛街，這裡是名錶、瑞士刀、紀念品的一級戰區。
+                <a href="https://www.google.com/maps/search/Interlaken+Hoheweg" target="_blank" class="map-btn">🗺️ 導航</a>
                 
-                <span class="backup-title">方案 B：特呂默爾河瀑布 (Trümmelbach)</span>
-                位於 Lauterbrunnen，在室內看冰河瀑布，不怕淋濕。
+                <span class="backup-title">方案 B (室內商場)：Panorama Center</span>
+                <span class="tag tag-shop">Thun</span><br>
+                位於 Thun (圖恩) 的大型室內購物中心，下大雨完全不怕。
+                <a href="https://www.google.com/maps/search/Panorama+Center+Thun" target="_blank" class="map-btn">🗺️ 導航</a>
+
+                <span class="backup-title">方案 C (巧克力)：Funky Chocolate Club</span>
+                <span class="tag tag-choco">Interlaken</span><br>
+                下山去巧克力俱樂部，參加 DIY 課程或盡情試吃，適合全家同樂。
+                <a href="https://www.google.com/maps/search/?api=1&query=Funky+Chocolate+Club+Interlaken" target="_blank" class="map-btn">🗺️ 導航</a>
             </div>
         </div>
 
@@ -541,17 +549,24 @@
         <div class="detail-hero"><div class="detail-date">1/18 (日) | DAY 6</div><h1 class="detail-title">馬特洪峰<br>360度震撼</h1></div>
         
         <div class="backup-box">
-            <div class="backup-header">☔ 雨備：巧克力工廠與城堡</div>
+            <div class="backup-header">☔ 天氣不好去哪裡？(全功能版)</div>
             <div class="backup-content">
                 如果采爾馬特天氣不佳，利用 STP 搭火車出山：
                 
-                <span class="backup-title">方案 A (巧克力)：Maison Cailler</span>
-                <span class="tag tag-choco">Broc / Montreux</span><br>
-                前往蒙特勒(Montreux)轉車去 Broc，參觀 Cailler 巧克力工廠。
-                <a href="https://www.google.com/maps/search/?api=1&query=Maison+Cailler" target="_blank" class="map-btn">🗺️ 導航</a>
+                <span class="backup-title">方案 A (大型商場)：Métropole Shopping</span>
+                <span class="tag tag-shop">Sion</span><br>
+                前往瓦萊州首府 Sion (錫永)，逛大型室內購物中心 Métropole。
+                <a href="https://www.google.com/maps/search/Centre+Métropole+Sion" target="_blank" class="map-btn">🗺️ 導航</a>
                 
-                <span class="backup-title">方案 B：蒙特勒與西庸城堡</span>
-                直接去蒙特勒逛湖畔，參觀西庸城堡(Chillon Castle)。
+                <span class="backup-title">方案 B (湖畔精品)：Montreux</span>
+                <span class="tag tag-shop">Montreux</span><br>
+                直接去蒙特勒逛 Forum Montreux 商場或湖畔精品街。
+                <a href="https://www.google.com/maps/search/Forum+Montreux" target="_blank" class="map-btn">🗺️ 導航</a>
+
+                <span class="backup-title">方案 C (巧克力)：Maison Cailler</span>
+                <span class="tag tag-choco">Broc</span><br>
+                前往 Broc 參觀 Cailler 巧克力工廠，有語音導覽和試吃。
+                <a href="https://www.google.com/maps/search/?api=1&query=Maison+Cailler" target="_blank" class="map-btn">🗺️ 導航</a>
             </div>
         </div>
 
@@ -622,7 +637,7 @@
             <div class="time-block"><div class="time-dot"></div><div class="time-label">早上 (巧克力特企)</div><div class="activity-name">Lindt Home of Chocolate</div>
                 <div class="activity-desc">
                     <b>⚠️ 爸媽最愛！</b>位於 Kilchberg。
-                    <br><span class="board-at">搭車點：Zürich HB (搭 S-Bahn 到 Kilchberg 站)</span> <a href="https://www.google.com/maps/search/?api=1&query=Zurich+HB" target="_blank" class="map-btn">🗺️ 導航</a>
+                    <br><span class="board-at">搭車點：Zürich HB (搭 S-Bahn S8 或 S24 到 Kilchberg 站)</span> <a href="https://www.google.com/maps/search/?api=1&query=Zurich+HB" target="_blank" class="map-btn">🗺️ 導航</a>
                     <br>目標地：<a href="https://www.google.com/maps/search/?api=1&query=Lindt+Home+of+Chocolate" target="_blank" class="map-btn">🍫 巧克力工廠</a>
                     <ul class="detail-list">
                         <li>擁有世界最大的「9公尺巧克力噴泉」。</li>
