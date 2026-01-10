@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>瑞士10天深度導航版 (含搭車點) 🇨🇭</title>
+    <title>瑞士10天深度全配版 (含米倫/圖恩) 🇨🇭</title>
     <style>
         :root {
             --primary: #D80027; /* Swiss Red */
@@ -18,6 +18,7 @@
             --swatch: #e91e63;  /* Swatch Color */
             --loc: #2e7d32;     /* Location Color */
             --shop: #9c27b0;    /* Shopping Color */
+            --plus: #ff9800;    /* Plus Option Color */
         }
 
         body {
@@ -158,6 +159,13 @@
         .backup-content { font-size: 0.9rem; color: #455a64; line-height: 1.5; }
         .backup-title { font-weight: bold; display: block; margin-top: 10px; color: #333; }
         
+        /* Plus Option Box */
+        .plus-box {
+            background: #fff3e0; border: 1px solid #ffe0b2; border-radius: 12px; padding: 15px; margin-bottom: 25px;
+            border-left: 5px solid var(--plus);
+        }
+        .plus-header { display: flex; align-items: center; font-weight: 700; color: #e65100; margin-bottom: 8px; }
+        
         /* Local Brands Box */
         .brand-box {
             background: #e8eaf6; border: 1px solid #c5cae9; border-radius: 12px; padding: 15px; margin-bottom: 20px;
@@ -191,8 +199,9 @@
         .tag-backup { background: #fff; border: 1px solid var(--rain); color: var(--rain); }
         .tag-choco { background: #efebe9; color: var(--choco); border: 1px solid #d7ccc8; }
         .tag-shop { background: #f3e5f5; color: var(--shop); border: 1px solid #e1bee7; }
+        .tag-plus { background: #fff3e0; color: #ef6c00; border: 1px solid #ffcc80; }
 
-        /* Map Button & Location Style */
+        /* Map Button Style */
         .map-btn {
             display: inline-block;
             margin-left: 8px;
@@ -252,11 +261,11 @@
         </div>
         <div class="day-list-item" onclick="openDay('day2')">
             <div class="day-number">D2</div>
-            <div class="day-info"><h3>黃金列車 & 格林德瓦</h3><p>1/14 (三) | 琉森 -> 格林德瓦</p></div><div class="arrow">❯</div>
+            <div class="day-info"><h3>黃金列車 & 圖恩湖</h3><p>1/14 (三) | 琉森 -> 格林德瓦</p></div><div class="arrow">❯</div>
         </div>
         <div class="day-list-item" onclick="openDay('day3')">
             <div class="day-number">D3</div>
-            <div class="day-info"><h3>少女峰 (含購物+巧克力)</h3><p>1/15 (四) | 歐洲屋脊 or 逛街</p></div><div class="arrow">❯</div>
+            <div class="day-info"><h3>少女峰 & 米倫小鎮</h3><p>1/15 (四) | 歐洲屋脊 or 逛街</p></div><div class="arrow">❯</div>
         </div>
         <div class="day-list-item" onclick="openDay('day4')">
             <div class="day-number">D4</div>
@@ -396,6 +405,19 @@
                 </div>
             </div>
         </div>
+
+        <div class="plus-box">
+            <div class="plus-header">➕ 備用/加碼：圖恩 (Thun) 半日遊</div>
+            <div class="backup-content">
+                如果下午時間充裕或天氣好，可以從 Interlaken 搭火車 (30分) 去 **Thun**。
+                <ul class="detail-list">
+                    <li><b>圖恩城堡 (Thun Castle)：</b>中世紀古堡，俯瞰全城與湖景。</li>
+                    <li><b>Obere Hauptgasse：</b>非常有特色的雙層人行道老街，很好逛。</li>
+                </ul>
+                <a href="https://www.google.com/maps/dir/Grindelwald,+Switzerland/Lauterbrunnen,+Switzerland/data=!4m14!4m13!1m5!1m1!19sChIJF5LHGKuej0cRZS-XQg9cqr8!2m2!1d8.0413962!2d46.624164!1m5!1m1!19sChIJx2UROwegj0cRMSyQVbstOQU!2m2!1d7.9090981!2d46.593505799999996!3e3" target="_blank" class="map-btn">🗺️ 導航去圖恩</a>
+            </div>
+        </div>
+
         <div class="hotel-card">
             <a href="https://www.google.com/maps/search/?api=1&query=Hotel+Tschuggen+Grindelwald" target="_blank" class="hotel-map-link">🗺️</a>
             <div class="hotel-label">CONFIRMED</div>
@@ -459,6 +481,18 @@
             <div class="time-block"><div class="time-dot"></div><div class="time-label">下午</div><div class="activity-name">Wengen 環狀下山</div>
                 <div class="activity-desc">
                     經由 Wengen (威根小鎮) 和 Lauterbrunnen (瀑布鎮) 下山，不走回頭路。
+                </div>
+            </div>
+
+            <div class="plus-box">
+                <div class="plus-header">➕ 延伸加碼：米倫 (Mürren)</div>
+                <div class="backup-content">
+                    下午抵達 Lauterbrunnen 後，若時間還早，可直接搭纜車上去 **Mürren**。
+                    <br><span class="tag tag-plus">STP 免費</span>
+                    <ul class="detail-list">
+                        <li><b>交通：</b>Lauterbrunnen 搭纜車 -> Grütschalp -> 轉小火車 -> Mürren。</li>
+                        <li><b>特色：</b>懸崖邊的無車小鎮，與少女峰對望，風景極佳。</li>
+                    </ul>
                 </div>
             </div>
             
